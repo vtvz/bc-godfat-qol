@@ -5,7 +5,7 @@
 // @version     1
 // @include        https://bc.godfat.org/*
 // ==/UserScript==
-//
+
 const data = [
   "Ice Cat - Extremely powerful backliner from her strengthen ultra talent and very strong anti red/ metal CC. Has great compatibility in freezing and controlling both traits due to her common range advantage against melee, good uptime, and stackability. She roughly matches the DPS of Gao through strengthen except carries advantages such as super high mobility and cheap cost, is stunted by low HP.",
 
