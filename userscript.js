@@ -1,11 +1,13 @@
 // ==UserScript==
-// @name        Hello World
-// @namespace   http://hayageek.com
-// @include     *
+// @name        Battle Cats Tier
+// @description Battle Cats bc.godfat.org tier list injector
 // @version     1
-// @include        https://bc.godfat.org/*
+// @match       https://bc.godfat.org/*
+// @author      vtvz
+// @updateURL   https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/userscript.js
+// @downloadURL https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/userscript.js
 // ==/UserScript==
-////
+
 const data = [
   "Ice Cat - Extremely powerful backliner from her strengthen ultra talent and very strong anti red/ metal CC. Has great compatibility in freezing and controlling both traits due to her common range advantage against melee, good uptime, and stackability. She roughly matches the DPS of Gao through strengthen except carries advantages such as super high mobility and cheap cost, is stunted by low HP.",
 
@@ -544,6 +546,63 @@ const data = [
   "https://battle-cats.fandom.com/wiki/Izanami_of_Dusk_(Legend_Rare_Cat)",
 ];
 
+// from NP Chart
+// https://imgur.com/a/np-charts-9rAfl93
+const npChart = {
+  sell: [
+    "Witch Cat",
+    "Fortune Teller Cat",
+    "Thief Cat",
+    "Cat Gunslinger",
+    "Shaman Cat",
+    "Tin Cat",
+    "Gardener Cat",
+    "Psychocat",
+    "Stilts Cat",
+    "Good-Luck Ebisu",
+    "Bodhisattva Cat",
+    "Bishop Cat",
+    "Pirate Cat",
+    "Onmyoji Cat",
+    "Welterweight Cat",
+    "Pogo Cat",
+    "Backhoe Cat",
+    "Metal Cat",
+    "Gold Cat",
+    "Cat Toaster",
+    "Neneko",
+    "Rich Cat III",
+    "Sniper the Recruit",
+    "Freshman Cat Jobs",
+    "Piledriver Cat",
+    "Driller Cat",
+    "Cat Base Mini",
+    "Apple Cat",
+  ],
+  maybe: ["Fencer Cat", "Juliet Cat", "Viking Cat"],
+  "a-bit": [
+    "Sushi Cat",
+    "Kotatsu Cat",
+    "Nymph Cat",
+    "Surfer Cat",
+    "Matador Cat",
+    "Archer Cat",
+  ],
+  starve: ["Swimmer Cat", "Vaulter Cat"],
+  halfed: [
+    "Jurassic Cat",
+    "Salon Cat",
+    "Rocker Cat",
+    "Mer-Cat",
+    "Wushu Cat",
+    "Rover Cat",
+    "Wheel Cat",
+    "Hip Hop Cat",
+    "Figure Skating Cats",
+    "Weightlifter Cat",
+  ],
+};
+
 const tierListRaw = [
   "TOP-1 - Dark Kasli",
   "TOP-2 - Phono",
@@ -617,6 +676,21 @@ for (const index in names) {
 
 const tierList = {};
 
+tierList.addItem = (key, value) => {
+  if (!tierList[key]) {
+    tierList[key] = new Set();
+  }
+  tierList[key].add(value);
+};
+
+tierList.asArray = (key) => {
+  const val = tierList[key];
+  if (!val) {
+    return;
+  }
+  return [...val];
+};
+
 for (const item of tierListRaw) {
   const [tier, unitsRaw] = item.split(" - ");
 
@@ -636,16 +710,20 @@ for (const item of tierListRaw) {
 
     const fullName = nameToFullName[unitName];
 
-    if (tierList[fullName]) {
-      unitTier = `${tierList[fullName]} ${unitTier}`;
-    }
-
     if (!fullName) {
       console.log(unitName);
+      continue;
     }
-    tierList[fullName] = unitTier;
+    tierList.addItem(fullName, unitTier);
   }
 }
+
+for (const npKey in npChart) {
+  for (const fullName of npChart[npKey]) {
+    tierList.addItem(fullName, "NP-" + npKey.toUpperCase());
+  }
+}
+
 console.log(tierList);
 
 for (const fullName of fullNames) {
@@ -656,17 +734,18 @@ for (const fullName of fullNames) {
 
 if (typeof window !== "undefined") {
   const elms = document.querySelectorAll(
-    ".cat a:first-child, .found_cats a:first-child",
+    ".cat a:first-child, .found_cats a:first-child, .cats label span",
   );
 
   const missed = new Set();
 
   for (const el of elms) {
-    const tier = tierList[el.text];
-    if (tier) {
-      el.text = `${el.text} (${tier})`;
+    const text = el.textContent;
+    const tiers = tierList.asArray(text);
+    if (tiers) {
+      el.innerHTML = `${text} <sup><b>[${tiers.join(" ")}]</b></sup>`;
     } else {
-      missed.add(el.text);
+      missed.add(text);
     }
   }
 
