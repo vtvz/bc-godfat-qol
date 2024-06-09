@@ -4,8 +4,8 @@
 // @version     1
 // @match       https://bc.godfat.org/*
 // @author      vtvz
-// @updateURL   https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/userscript.js
-// @downloadURL https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/userscript.js
+// @updateURL   https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/godfat.js
+// @downloadURL https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/godfat.js
 // ==/UserScript==
 
 const data = [
