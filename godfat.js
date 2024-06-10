@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Battle Cats Tier
 // @description Battle Cats bc.godfat.org tier list injector
-// @version     1
+// @version     1.1
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/godfat.js
