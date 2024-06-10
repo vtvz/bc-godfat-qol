@@ -679,6 +679,14 @@ const banners = [
       "White Butler Vigler",
       "Betrothed Balaluga",
       "Rabbit Satoru",
+      "// others",
+      "Gloomy Neneko",
+      "Sunny Neneko",
+      "Years-End Neneko",
+      "Easter Neneko",
+      "Valentine's Neneko",
+      "Suntan Cat",
+      "Lifeguard Cats",
     ],
   },
   {
@@ -888,7 +896,7 @@ const banners = [
   {
     title: "Tower of Saviors Collaboration Event/Gacha Drop",
     link: "https://battle-cats.fandom.com/wiki/Tower_of_Saviors_Collaboration_Event/Gacha_Drop",
-    units: ["Voluptuous Peony - Daji"],
+    units: ["Voluptuous Peony - Daji", "// others", "Mollyanna Cat"],
   },
   {
     title: "Easter Carnival",
@@ -899,6 +907,11 @@ const banners = [
       "Blooming Kamukura",
       "Rabbit Satoru",
       "Floral Kalisa",
+      "// others",
+      "Easter Neneko",
+      "Brainwashed Cat",
+      "Brainwashed Gross Cat",
+      "Brainwashed Fish Cat",
     ],
   },
   {
@@ -912,6 +925,10 @@ const banners = [
       "White Butler Vigler",
       "Thunder Jack",
       "Frozen Rose Cat",
+      "// others",
+      "Brainwashed Gross Cat",
+      "Brainwashed Lizard Cat",
+      "Brainwashed Titan Cat",
     ],
   },
   {
@@ -926,6 +943,12 @@ const banners = [
       "Hatsune Miku: MM2020 Tokyo",
       "Snow Miku 2021",
       "Hatsune Miku XVI",
+      "// others",
+      "MEIKO & Cat",
+      "KAITO & Cat",
+      "Luka Cat",
+      "Neko Rin",
+      "Neko Len",
     ],
   },
   {
@@ -942,6 +965,13 @@ const banners = [
       "Kaguya of the Coast",
       "Night Beach Lilin",
       "Coastal Explorer Kanna",
+      "// others",
+      "Sunny Neneko",
+      "Suntan Cat",
+      "Lifeguard Cats",
+      "Brainwashed Axe Cat",
+      "Brainwashed Bird Cat",
+      "Brainwashed Titan Cat",
     ],
   },
   {
@@ -956,6 +986,10 @@ const banners = [
       "Mighty Carrowsell",
       "Betrothed Balaluga",
       "756-1",
+      "// others",
+      "Brainwashed Cat",
+      "Brainwashed Tank Cat",
+      "Brainwashed Cow Cat",
     ],
   },
   {
@@ -969,6 +1003,10 @@ const banners = [
       "Snow Angel Twinstars",
       "Keiji Claus",
       "Reindeer Terun",
+      "// others",
+      "Brainwashed Tank Cat",
+      "Brainwashed Cow Cat",
+      "Brainwashed Lizard Cat",
     ],
   },
   {
@@ -980,6 +1018,11 @@ const banners = [
       "Lilith Cat",
       "Skull Rider Vars",
       "Count Yukimura",
+      "// others",
+      "Gloomy Neneko",
+      "Brainwashed Cat",
+      "Brainwashed Gross Cat",
+      "Brainwashed Fish Cat",
     ],
   },
   {
@@ -994,6 +1037,12 @@ const banners = [
       "Vega",
       "Sagat",
       "Sakura",
+      "// others",
+      "C. Honda",
+      "Balrog Cat",
+      "Vega Cat",
+      "Sagat Cat",
+      "M. Bison Cat",
     ],
   },
   {
@@ -1008,6 +1057,12 @@ const banners = [
       "Balrog",
       "M. Bison",
       "Luke",
+      "// others",
+      "C. Honda",
+      "Balrog Cat",
+      "Vega Cat",
+      "Sagat Cat",
+      "M. Bison Cat",
     ],
   },
   {
@@ -1039,6 +1094,11 @@ const banners = [
       "First-Love Myrcia",
       "Lilin",
       "Sweet Love Mekako",
+      "// others",
+      "Valentine's Neneko",
+      "Brainwashed Axe Cat",
+      "Brainwashed Bird Cat",
+      "Brainwashed Titan Cat",
     ],
   },
   {
@@ -1086,6 +1146,17 @@ const banners = [
       "Moon Operators",
       "AAA Wunder",
       "One-Eyed Asuka",
+      "// others",
+      "Rei Ayanami",
+      "Asuka Langley",
+      "Mari Illustrious",
+      "Misato Katsuragi",
+      "Ritsuko Akagi",
+      "Rei Ayanami (???)",
+      "Rei Cat",
+      "Asuka Cat",
+      "Mari Cat",
+      "Kaworu Cat",
     ],
   },
   {
@@ -1098,6 +1169,17 @@ const banners = [
       "The 10th Angel",
       "The 9th Angel",
       "Eva Unit-13",
+      "// others",
+      "Rei Ayanami",
+      "Asuka Langley",
+      "Mari Illustrious",
+      "Misato Katsuragi",
+      "Ritsuko Akagi",
+      "Rei Ayanami (???)",
+      "Rei Cat",
+      "Asuka Cat",
+      "Mari Cat",
+      "Kaworu Cat",
     ],
   },
   {
@@ -1110,6 +1192,12 @@ const banners = [
       "Shampoo (Cat)",
       "Mousse (Duck)",
       "Ranma Saotome (Leotard)",
+      "// others",
+      "Happosai",
+      "Ukyo Kuonji (GR)",
+      "Tatewaki Kuno (Gi)",
+      "Genma Saotome (Panda)",
+      "Akane Cat",
     ],
   },
   {
@@ -1124,6 +1212,19 @@ const banners = [
       "Michelia",
       "Todomeki",
       "Eyewaltz",
+      "// others",
+      "Aura",
+      "Rei",
+      "Alois",
+      "Citrouille",
+      "Orthos",
+      "Celesse",
+      "Nono",
+      "Olga",
+      "Norn",
+      "Yoichi",
+      "Serum",
+      "Fuu",
     ],
   },
   {
@@ -1134,6 +1235,9 @@ const banners = [
       "Crazed Yuki",
       "Lost World Yuki",
       "Benevolent Souma",
+      "// others",
+      "Otaku Geek Cat",
+      "Souma Cat",
     ],
   },
   {
@@ -1148,12 +1252,27 @@ const banners = [
       "Rider",
       "Gilgamesh",
       "Sakura Matou",
+      "// others",
+      "Kotomine & Gilgamesh Cats",
+      "Sakura the Cat",
+      "Rin the Cat",
+      "Illya the Cat",
+      "Archer the Cat",
+      "Rider the Cat",
     ],
   },
   {
     title: "Power Pro Baseball Collaboration Event/Gacha Drop",
     link: "https://battle-cats.fandom.com/wiki/Power_Pro_Baseball_Collaboration_Event/Gacha_Drop",
-    units: ["Saki Nijima", "Subaru Hoshi", "Miyabi Oyama"],
+    units: [
+      "Saki Nijima",
+      "Subaru Hoshi",
+      "Miyabi Oyama",
+      "// others",
+      "Aoi Hayakawa",
+      "Mizuki Tachibana",
+      "Hijiri Rokudo",
+    ],
   },
   {
     title: "Puella Magi Madoka Magica Collaboration Event/Gacha Drop",
@@ -1165,6 +1284,13 @@ const banners = [
       "Mami Tomoe",
       "Kyoko Sakura",
       "Bebe",
+      "// others",
+      "Kyubey",
+      "Madoka Cat",
+      "Homura Cat",
+      "Sayaka Cat",
+      "Mami Cat",
+      "Kyoko Cat",
     ],
   },
   {
@@ -1179,6 +1305,14 @@ const banners = [
       "Anubis the Protector",
       "Nobiluga",
       "Lasvoss",
+      "// others",
+      "Gold Cat",
+      "Cat Base Mini",
+      "Neneko",
+      "Metal Cat",
+      "Sniper the Recruit",
+      "Rich Cat III",
+      "Freshman Cat Jobs",
     ],
   },
   {
@@ -1190,6 +1324,13 @@ const banners = [
       "HMS Princess",
       "Calette",
       "Herme",
+      "// others",
+      "Yurinchi",
+      "Reaper",
+      "Hina",
+      "Swordsman",
+      "Cow Princess",
+      "Li'l Gau",
     ],
   },
   {
@@ -1209,6 +1350,8 @@ const banners = [
       "Sharpshooter Saki",
       "Mighty Aethur Ltd.",
       "Shiro Amakusa",
+      "// others",
+      "Good-Luck Ebisu",
     ],
   },
   {
@@ -1228,6 +1371,8 @@ const banners = [
       "Sharpshooter Saki",
       "Mighty Aethur Ltd.",
       "Shiro Amakusa",
+      "// others",
+      "Good-Luck Ebisu",
     ],
   },
   {
@@ -1241,6 +1386,9 @@ const banners = [
       "Satanmaria",
       "Heracrist",
       "Shaman Khan",
+      "// others",
+      "Fiendish Nero",
+      "Holy Knight Alibaba",
     ],
   },
   {
@@ -1253,6 +1401,19 @@ const banners = [
       "Tecoluga",
       "Hayabusa",
       "Wrathful Poseidon",
+      "// others",
+      "Gold Cat",
+      "Cat Base Mini",
+      "Neneko",
+      "Metal Cat",
+      "Sniper the Recruit",
+      "Rich Cat III",
+      "Freshman Cat Jobs",
+      "Gloomy Neneko",
+      "Sunny Neneko",
+      "Years-End Neneko",
+      "Easter Neneko",
+      "Valentine's Neneko",
     ],
   },
   {
@@ -1270,6 +1431,14 @@ const banners = [
       "The Grateful Crane",
       "Catman",
       "Karasu-Tengu Tenten",
+      "// others",
+      "Gold Cat",
+      "Cat Base Mini",
+      "Neneko",
+      "Metal Cat",
+      "Sniper the Recruit",
+      "Rich Cat III",
+      "Freshman Cat Jobs",
     ],
   },
   {
@@ -1289,12 +1458,33 @@ const banners = [
       "Mighty Drednot",
       "Sharpshooter Saki",
       "Hevijak the Wicked",
+      "// others",
+      "Gold Cat",
+      "Cat Base Mini",
+      "Neneko",
+      "Metal Cat",
+      "Sniper the Recruit",
+      "Rich Cat III",
+      "Freshman Cat Jobs",
     ],
   },
   {
     title: "Survive! Mola Mola! Collaboration Event/Gacha Drop",
     link: "https://battle-cats.fandom.com/wiki/Survive!_Mola_Mola!_Collaboration_Event/Gacha_Drop",
-    units: ["Mola King", "Mola King"],
+    units: [
+      "Mola King",
+      "Mola King",
+      "// others",
+      "Baby Mola",
+      "Gold Cat",
+      "Cat Base Mini",
+      "Neneko",
+      "Metal Cat",
+      "Baby Mola",
+      "Sniper the Recruit",
+      "Rich Cat III",
+      "Freshman Cat Jobs",
+    ],
   },
   {
     title: "Colossus Busters",
@@ -1308,12 +1498,20 @@ const banners = [
       "Cat Tengu",
       "Mighty Carrowsell",
       "Spectral Goth Vega",
+      "// others",
+      "Gold Cat",
+      "Cat Base Mini",
+      "Neneko",
+      "Metal Cat",
+      "Sniper the Recruit",
+      "Rich Cat III",
+      "Freshman Cat Jobs",
     ],
   },
   {
     title: "Crash Fever Collaboration Event/Gacha Drop",
     link: "https://battle-cats.fandom.com/wiki/Crash_Fever_Collaboration_Event/Gacha_Drop",
-    units: ["Mobius"],
+    units: ["Mobius", "// others", "Belial"],
   },
   {
     title: "Metal Slug Collaboration Event/Gacha Drop",
@@ -1324,12 +1522,21 @@ const banners = [
       "DONALD MORDEN",
       "HI-DO",
       "Sol Dae Rokker",
+      "// others",
+      "SV-001",
+      "ALLEN O'NEIL",
+      "MARCO",
+      "TARMA",
+      "ERI",
+      "FIO",
+      "MARS PEOPLE",
     ],
   },
   // mannual
+  //
   {
     title: "River City Ransom Collaboration Event",
-    link: "https://battle-cats.fandom.com/wiki/Puella_Magi_Madoka_Magica_Collaboration_Event",
+    link: "https://battle-cats.fandom.com/wiki/River_City_Ransom_Collaboration_Event",
     units: ["High School Kingpin Riki", "Kunio-kun"],
   },
 ];
@@ -1417,9 +1624,26 @@ for (const npKey in npChart) {
   }
 }
 
+const unitToBanners = {};
+
+unitToBanners.addItem = (key, value) => {
+  if (!unitToBanners[key]) {
+    unitToBanners[key] = new Set();
+  }
+  unitToBanners[key].add(value);
+};
+
+unitToBanners.asArray = (key) => {
+  const val = unitToBanners[key];
+  if (!val) {
+    return;
+  }
+  return [...val];
+};
+
 for (const banner of banners) {
   for (const fullName of banner.units) {
-    tierList.addItem(fullName, `(${banner.title})`);
+    unitToBanners.addItem(fullName, banner);
   }
 }
 
@@ -1442,11 +1666,43 @@ if (typeof window !== "undefined") {
     const text = el.textContent;
     const tiers = tierList.asArray(text);
     if (tiers) {
-      el.innerHTML = `${text} <sup><b>[${tiers.join(" ")}]</b></sup>`;
+      el.innerHTML += `<sup><b>[${tiers.join(" ")}]</b></sup>`;
     } else {
       missed.add(text);
+    }
+
+    const unitBanners = unitToBanners.asArray(text);
+    if (unitBanners) {
+      el.parentElement.innerHTML +=
+        '<div class="vtvz-banners">' +
+        unitBanners
+          .map(
+            (banner) =>
+              `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`,
+          )
+          .join(" | ") +
+        "</div>";
     }
   }
 
   console.log(missed);
+
+  var style = document.createElement("style");
+  style.type = "text/css";
+  const styleText = `
+    .vtvz-banners {
+      max-width: 350px;
+      font-size: 14px;
+    }
+
+    .owned {
+      background-color: #34aeae !important;
+    }
+  `;
+  if (style.styleSheet) {
+    style.styleSheet.cssText = styleText;
+  } else {
+    style.appendChild(document.createTextNode(styleText));
+  }
+  document.getElementsByTagName("head")[0].appendChild(style);
 }

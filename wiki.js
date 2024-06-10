@@ -10,17 +10,36 @@
 
 const title = document.querySelector("h1");
 
-if (title) {  title.style.cursor = "pointer";
+if (title) {
+  title.style.cursor = "pointer";
   title.onclick = () => {
     const unitNames = [...document.querySelectorAll("tr th:nth-child(1)")]
       .filter((_) => _.textContent.includes("Normal: "))
       .map((_) => _.querySelector("a").textContent.trim());
 
+    const rares = [...document.querySelectorAll("tr td b a")]
+      .filter((el) => {
+        const href = el.href;
+        return href.includes("Super_Rare_Cat") || href.includes("Rare_Cat");
+      })
+      .map((el) => el.textContent.trim());
+
+    if (rares.length > 0) {
+      rares.unshift("// others");
+    }
+
     const content = {
       title: title.textContent.replace(/\(.*?\)/, "").trim(),
-      units: unitNames,
+      link: window.location.href,
+      units: [...unitNames, ...rares],
     };
+
     navigator.clipboard.writeText(JSON.stringify(content));
-    alert("Content Copied");
+
+    if (content.units.length == 0) {
+      alert("Nothing copied really");
+    } else {
+      alert("Content Copied " + content.units.length);
+    }
   };
 }
