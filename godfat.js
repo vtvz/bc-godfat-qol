@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Battle Cats Tier
 // @description Battle Cats bc.godfat.org tier list injector
-// @version     1.1
+// @version     1.2
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/godfat.js
@@ -572,13 +572,13 @@ const tierListRaw = [
   "C - Akuma, Musashi",
   "D - Babel, Legeluga",
 
-  "US - Dark Kasli, Phono, Dark Phono, Izanagi",
-  "UA - Mitama, D’arktanyan",
-  "UB - Kasli, Dartanyan, Gao",
-  "UC - Shadow Gao, Izanami",
-  "UD - Dark Izu, Izu",
-  "UE - Dark Mitama, Garu",
-  "UF - Dark Garu",
+  "Fest-S - Dark Kasli, Phono, Dark Phono, Izanagi",
+  "Fest-A - Mitama, D’arktanyan",
+  "Fest-B - Kasli, Dartanyan, Gao",
+  "Fest-C - Shadow Gao, Izanami",
+  "Fest-D - Dark Izu, Izu",
+  "Fest-E - Dark Mitama, Garu",
+  "Fest-F - Dark Garu",
 
   // NOTE: PATCH
   "E - Envanz",
@@ -587,58 +587,73 @@ const tierListRaw = [
 // from NP Chart
 // https://imgur.com/a/np-charts-9rAfl93
 const npChart = {
-  sell: [
-    "Witch Cat",
-    "Fortune Teller Cat",
-    "Thief Cat",
-    "Cat Gunslinger",
-    "Shaman Cat",
-    "Tin Cat",
-    "Gardener Cat",
-    "Psychocat",
-    "Stilts Cat",
-    "Good-Luck Ebisu",
-    "Bodhisattva Cat",
-    "Bishop Cat",
-    "Pirate Cat",
-    "Onmyoji Cat",
-    "Welterweight Cat",
-    "Pogo Cat",
-    "Backhoe Cat",
-    "Metal Cat",
-    "Gold Cat",
-    "Cat Toaster",
-    "Neneko",
-    "Rich Cat III",
-    "Sniper the Recruit",
-    "Freshman Cat Jobs",
-    "Piledriver Cat",
-    "Driller Cat",
-    "Cat Base Mini",
-    "Apple Cat",
-  ],
-  maybe: ["Fencer Cat", "Juliet Cat", "Viking Cat"],
-  "a-bit": [
-    "Sushi Cat",
-    "Kotatsu Cat",
-    "Nymph Cat",
-    "Surfer Cat",
-    "Matador Cat",
-    "Archer Cat",
-  ],
-  starve: ["Swimmer Cat", "Vaulter Cat"],
-  halfed: [
-    "Jurassic Cat",
-    "Salon Cat",
-    "Rocker Cat",
-    "Mer-Cat",
-    "Wushu Cat",
-    "Rover Cat",
-    "Wheel Cat",
-    "Hip Hop Cat",
-    "Figure Skating Cats",
-    "Weightlifter Cat",
-  ],
+  sell: {
+    label: "Just sell them",
+    units: [
+      "Witch Cat",
+      "Fortune Teller Cat",
+      "Thief Cat",
+      "Cat Gunslinger",
+      "Shaman Cat",
+      "Tin Cat",
+      "Gardener Cat",
+      "Psychocat",
+      "Stilts Cat",
+      "Good-Luck Ebisu",
+      "Bodhisattva Cat",
+      "Bishop Cat",
+      "Pirate Cat",
+      "Onmyoji Cat",
+      "Welterweight Cat",
+      "Pogo Cat",
+      "Backhoe Cat",
+      "Metal Cat",
+      "Gold Cat",
+      "Cat Toaster",
+      "Neneko",
+      "Rich Cat III",
+      "Sniper the Recruit",
+      "Freshman Cat Jobs",
+      "Piledriver Cat",
+      "Driller Cat",
+      "Cat Base Mini",
+      "Apple Cat",
+    ],
+  },
+  maybe: {
+    label: "Decide youself",
+    units: ["Fencer Cat", "Juliet Cat", "Viking Cat"],
+  },
+  "a-bit": {
+    label: "Use a bit",
+    units: [
+      "Sushi Cat",
+      "Kotatsu Cat",
+      "Nymph Cat",
+      "Surfer Cat",
+      "Matador Cat",
+      "Archer Cat",
+    ],
+  },
+  starve: {
+    label: "Use unless NP starve",
+    units: ["Swimmer Cat", "Vaulter Cat"],
+  },
+  halfed: {
+    label: "Use until halved / quartered",
+    units: [
+      "Jurassic Cat",
+      "Salon Cat",
+      "Rocker Cat",
+      "Mer-Cat",
+      "Wushu Cat",
+      "Rover Cat",
+      "Wheel Cat",
+      "Hip Hop Cat",
+      "Figure Skating Cats",
+      "Weightlifter Cat",
+    ],
+  },
 };
 
 const banners = [
@@ -1541,6 +1556,18 @@ const banners = [
   },
 ];
 
+const tierLabels = new Map();
+tierLabels.set(
+  /^TOP-/,
+  "The best ubers. Spend everything you have to get them",
+);
+tierLabels.set(
+  /^Fest-/,
+  "Uberfest and Epicfest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others",
+);
+tierLabels.set(/-UT$/, "Tier with Ultra Talents consideration");
+tierLabels.set(/-UF$/, "Tier with Ultra Form consideration");
+
 const names = [];
 const fullNames = [];
 
@@ -1611,7 +1638,8 @@ for (const item of tierListRaw) {
     const fullName = nameToFullName[unitName];
 
     if (!fullName) {
-      console.log(unitName);
+      console.log("don't have full name", unitName);
+
       continue;
     }
     tierList.addItem(fullName, unitTier);
@@ -1619,7 +1647,9 @@ for (const item of tierListRaw) {
 }
 
 for (const npKey in npChart) {
-  for (const fullName of npChart[npKey]) {
+  tierLabels.set("NP-" + npKey.toUpperCase(), npChart[npKey].label);
+
+  for (const fullName of npChart[npKey].units) {
     tierList.addItem(fullName, "NP-" + npKey.toUpperCase());
   }
 }
@@ -1647,7 +1677,7 @@ for (const banner of banners) {
   }
 }
 
-console.log(tierList);
+console.log("tierList", tierList);
 
 for (const fullName of fullNames) {
   if (!tierList[fullName]) {
@@ -1665,8 +1695,23 @@ if (typeof window !== "undefined") {
   for (const el of elms) {
     const text = el.textContent;
     const tiers = tierList.asArray(text);
+
     if (tiers) {
-      el.innerHTML += `<sup><b>[${tiers.join(" ")}]</b></sup>`;
+      const htmlTiers = tiers
+        .map((tier) => {
+          const found = [...tierLabels.entries()].find(([key, _]) =>
+            tier.match(key),
+          );
+
+          if (found) {
+            return [tier, found[1]];
+          }
+
+          return [tier, ""];
+        })
+        .map(([tier, label]) => `<span title="${label}">[${tier}]</span>`);
+
+      el.innerHTML += `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
     } else {
       missed.add(text);
     }
@@ -1685,7 +1730,7 @@ if (typeof window !== "undefined") {
     }
   }
 
-  console.log(missed);
+  console.log("missed", missed);
 
   var style = document.createElement("style");
   style.type = "text/css";
