@@ -1,5 +1,7 @@
 import { Banner } from "../Banners";
 
+// Got from wiki with `dist/wiki.js` script
+
 const banners: Banner[] = [
   {
     title: "Dynasty Fest",

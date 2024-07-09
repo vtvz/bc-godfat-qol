@@ -1,6 +1,9 @@
 // Wrap and join
 // ^v$hS"A,Jj
 
+// update 6/30/2024
+// based on https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I
+
 export const tierListRaw: string[] = [
   "TOP-1 - Dark Kasli",
   "TOP-2 - Phono",

@@ -87,21 +87,33 @@ export default class HtmlInjector {
   injectStyle() {
     var style = document.createElement("style");
     const styleText = `
+      .owned {
+        background-color: #34aeae !important;
+      }
+
       .vtvz-banners {
         max-width: 350px;
         font-size: 14px;
       }
 
       .vtvz-legend:not(.legend) {
-        border-top: 20px solid darkviolet;
+        # border-top: 25px solid darkviolet;
+        background-color: darkviolet !important;
+        color: #d8a56f !important;
+      }
+
+      .vtvz-legend:not(.legend) a {
+        color: #d8a56f !important;
       }
 
       .vtvz-uber:not(.uber) {
-        border-top: 20px solid red;
+        # border-top: 25px solid red;
+        background-color: red !important;
       }
 
       .vtvz-super:not(.supa) {
-        border-top: 20px solid gold;
+        # border-top: 25px solid gold;
+        background-color: gold !important;
       }
 
       .vtvz-rare {
@@ -111,10 +123,6 @@ export default class HtmlInjector {
       }
 
       .vtvz-normal {
-      }
-
-      .owned {
-        background-color: #34aeae !important;
       }
     `;
 

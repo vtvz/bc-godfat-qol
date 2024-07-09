@@ -83,7 +83,9 @@ const data: string[] = [
 
   "https://battle-cats.fandom.com/wiki/Hattori_Hanzo_(Uber_Rare_Cat)",
 
-  // "Akechi - TBD",
+  "Akechi - Long ranged sniper with good overall stats. Delivers strong DPS from a distance with high pierce, best matchups being backliner enemies who easily stand in his LD. Surge provides an occasional damage boost but spawns slightly within his blindspot, reducing accuracy but allowing for slight safety precaution. Carries guaranteed knockback procs which has great pushing power, being able to borderline juggle backliner angels and blacks with his somewhat fast attack rate. Summon synergizes very well in being able to knockback and damage enemies, covering his own blindspot. Suffers from insanely short inner range which impacts certain matchups and makes him not as favorable as a frontliner counter.",
+
+  "https://battle-cats.fandom.com/wiki/Akechi_Mitsuhide_(Uber_Rare_Cat)",
 
   "Musashi - Very tanky mid ranger with high DPS and fast attack rates. Extremely bulky and has insanely good damage against black, however, his single target heavily stunts his compatibility as black enemies are often swarm type enemies. Does have high viability on black stages with minimal amount of peons and serves as a big version of Dragon Cat as a generalist.",
 
@@ -534,6 +536,14 @@ const data: string[] = [
   "Izanami - Extremely powerful anti traitless with huge burst damage from savage blow and wide AOE with staggering LD and area attacks. Has high bulk and operates similarly to Naala akin to normal Izanagi’s role. Good bulk, high damage, and high pierce leads to insanely good anti traitless matchups and becomes easily usable on stages with any sort of frontliner. Immunities such as surge, curse, and freeze immune allow for better traitless matchups and total destruction against traitless surge bosses. Lacks wave immunity and is unfortunately complete shit in general stats making her only usable within traitless niche, harboring one of the worst base LD DPS out of any uber/ legend rare.",
 
   "https://battle-cats.fandom.com/wiki/Izanami_of_Dusk_(Legend_Rare_Cat)",
+
+  "Black Zeus (Bikkuriman Collab) - Extremely powerful LD attacker/ nuker with great general stats and insanely powerful niche. Has very good base stats with great HP, average KB count, good standing range, a wide LD attack, and strong DPS for his range that puts him to similar general offensive output to Nanaho. His main ability is insane damage vs traitless which puts his effective DPS higher than even Epicfest ubers like Shadow Gao on top of having the benefit of pierce due to being an LD unit. Has average survivability and long foreswing which can give an opportunity for an aggressive pusher to infiltrate his blindspot.",
+
+  "https://battle-cats.fandom.com/wiki/Black_Zeus_(Legend_Rare_Cat)",
+
+  "Gundros - High ranged heavy nuker with super backliner range and gargantuan damage against aliens and blacks. Deals one of the highest singular nuke damage against his targets compared to most other alien and black nukers while offering high effective DPS. However, his damage is insanely limited due to his poor mobility, long attack rate, and carrying the third longest foreswing out of any cat unit. This forces Gundros to be used in a highly risky play style known as bait-and-punish where you lure enemies into his range and nuke them. This causes Gundros to have bad flexibility and very poor synergy with other units, but in return has the potential to completely obliterate a targeted alien/ black, with alien being the more relevant target for his build.",
+
+  "https://battle-cats.fandom.com/wiki/760_(Uber_Rare_Cat)",
 ];
 
 export default data;

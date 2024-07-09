@@ -3,6 +3,7 @@ import {
   npChartRaw,
   tierListRaw,
   bannersRaw,
+  unitsRarityRaw,
 } from "./data";
 import TierList from "./TierList";
 import DescriptionData from "./DescriptionData";
@@ -32,6 +33,6 @@ if (typeof window !== "undefined") {
     tierList,
     unitToBanners,
     tierLabels,
-    new UnitsRarity(),
+    new UnitsRarity(unitsRarityRaw),
   ).inject();
 }
