@@ -1,34 +1,25 @@
-import { DescriptionData, banners, npChart, tierListRaw } from "./data";
-import { UnitToBanners } from "./data/banners";
+import {
+  descriptionsDataRaw,
+  npChartRaw,
+  tierListRaw,
+  bannersRaw,
+} from "./data";
 import TierList from "./TierList";
+import DescriptionData from "./DescriptionData";
+import Banners from "./Banners";
+import TierLabels from "./TierLabels";
+import UnitsRarity from "./UnitsRarity";
+import HtmlInjector from "./HtmlInjector";
 
-const descriptionData = new DescriptionData().parse();
+const descriptionData = new DescriptionData().parse(descriptionsDataRaw);
 
-const tierLabels = new Map();
-tierLabels.set(
-  /^TOP-/,
-  "The best ubers. Spend everything you have to get them",
-);
-tierLabels.set(
-  /^Fest-/,
-  "Uberfest and Epicfest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others",
-);
-tierLabels.set(/-UT$/, "Tier with Ultra Talents consideration");
-tierLabels.set(/-UF$/, "Tier with Ultra Form consideration");
+const tierLabels = new TierLabels().npChart(npChartRaw);
 
-const tierList = new TierList(descriptionData).parse(tierListRaw);
+const tierList = new TierList(descriptionData)
+  .parse(tierListRaw)
+  .npChart(npChartRaw);
 
-for (const npKey in npChart) {
-  tierLabels.set("NP-" + npKey.toUpperCase(), npChart[npKey].label);
-
-  for (const fullName of npChart[npKey].units) {
-    tierList.addItem(fullName, "NP-" + npKey.toUpperCase());
-  }
-}
-
-const unitToBanners = new UnitToBanners().parse();
-
-console.log("tierList", tierList);
+const unitToBanners = new Banners().parse(bannersRaw);
 
 for (const fullName of descriptionData.fullNames) {
   if (!tierList.asArray(fullName)) {
@@ -37,66 +28,10 @@ for (const fullName of descriptionData.fullNames) {
 }
 
 if (typeof window !== "undefined") {
-  const elms = document.querySelectorAll(
-    ".cat a:first-child, .found_cats a:first-child, .cats label span",
-  );
-
-  const missed = new Set();
-
-  for (const el of elms) {
-    const text = el.textContent;
-    const tiers = tierList.asArray(text);
-
-    if (tiers) {
-      const htmlTiers = tiers
-        .map((tier) => {
-          const found = [...tierLabels.entries()].find(([key, _]) =>
-            tier.match(key),
-          );
-
-          if (found) {
-            return [tier, found[1]];
-          }
-
-          return [tier, ""];
-        })
-        .map(([tier, label]) => `<span title="${label}">[${tier}]</span>`);
-
-      el.innerHTML += `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
-    } else {
-      missed.add(text);
-    }
-
-    const unitBanners = unitToBanners.asArray(text);
-    if (unitBanners) {
-      el.parentElement.innerHTML +=
-        '<div class="vtvz-banners">' +
-        unitBanners
-          .map(
-            (banner) =>
-              `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`,
-          )
-          .join(" | ") +
-        "</div>";
-    }
-  }
-
-  console.log("missed", missed);
-
-  var style = document.createElement("style");
-  style.type = "text/css";
-  const styleText = `
-    .vtvz-banners {
-      max-width: 350px;
-      font-size: 14px;
-    }
-
-    .owned {
-      background-color: #34aeae !important;
-    }
-  `;
-
-  style.appendChild(document.createTextNode(styleText));
-
-  document.getElementsByTagName("head")[0].appendChild(style);
+  new HtmlInjector(
+    tierList,
+    unitToBanners,
+    tierLabels,
+    new UnitsRarity(),
+  ).inject();
 }

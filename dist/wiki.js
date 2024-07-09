@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        Battle Cats Unit Copy
 // @description Battle Cats copy all units from page
-// @version     1
-// @match       https://battle-cats.fandom.com/wiki/*
+// @version     1.0
+// @namespace   https://github.com/vtvz/bc-tiers
 // @author      vtvz
-// @updateURL   https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/wiki.js
-// @downloadURL https://gist.githubusercontent.com/vtvz/c76e08303e078df861ddab5b5621e924/raw/wiki.js
+// @match       https://battle-cats.fandom.com/wiki/*
+// @updateURL   https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/wiki.js
+// @downloadURL https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/wiki.js
 // ==/UserScript==
-
 const title = document.querySelector("h1");
 
 if (title) {

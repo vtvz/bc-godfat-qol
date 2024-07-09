@@ -1,6 +1,14 @@
 // from NP Chart
 // https://imgur.com/a/np-charts-9rAfl93
-export default {
+
+export interface NpChartItem {
+  label: string;
+  units: string[];
+}
+
+export type NpChartItems = { [key: string]: NpChartItem };
+
+const npChart: NpChartItems = {
   sell: {
     label: "Just sell them",
     units: [
@@ -69,3 +77,5 @@ export default {
     ],
   },
 };
+
+export default npChart;

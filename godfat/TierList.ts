@@ -1,4 +1,5 @@
-import { DescriptionData } from "./data/data";
+import { NpChartItems } from "./data/npChartRaw";
+import DescriptionData from "./DescriptionData";
 
 export default class TierList {
   descriptionData: DescriptionData;
@@ -53,8 +54,15 @@ export default class TierList {
       }
     }
 
-    console.log(this);
+    return this;
+  }
 
+  npChart(npChart: NpChartItems): TierList {
+    for (const npKey in npChart) {
+      for (const fullName of npChart[npKey].units) {
+        this.addItem(fullName, "NP-" + npKey.toUpperCase());
+      }
+    }
     return this;
   }
 }

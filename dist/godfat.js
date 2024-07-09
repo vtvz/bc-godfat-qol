@@ -1,16 +1,917 @@
 // ==UserScript==
 // @name        Battle Cats Tier
 // @description Battle Cats bc.godfat.org tier list injector
-// @version     1.3
+// @namespace   https://github.com/vtvz/bc-tiers
+// @version     2.0
 // @match       https://bc.godfat.org/*
 // @author      vtvz
-// @updateURL   https://raw.githubusercontent.com/vtvz/bc-tiers/ts-refactor/dist/godfat.js
-// @downloadURL https://raw.githubusercontent.com/vtvz/bc-tiers/ts-refactor/dist/godfat.js
+// @updateURL   https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/godfat.js
+// @downloadURL https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/godfat.js
 // ==/UserScript==
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = [
+class Banners {
+    constructor() {
+        this.unitToBanners = new Map();
+    }
+    addItem(key, value) {
+        if (!this.unitToBanners[key]) {
+            this.unitToBanners[key] = new Set();
+        }
+        this.unitToBanners[key].add(value);
+    }
+    asArray(key) {
+        const val = this.unitToBanners[key];
+        if (!val) {
+            return;
+        }
+        return [...val];
+    }
+    parse(banners) {
+        for (const banner of banners) {
+            for (const fullName of banner.units) {
+                this.addItem(fullName, banner);
+            }
+        }
+        return this;
+    }
+}
+exports.default = Banners;
+
+},{}],2:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class DescriptionData {
+    constructor() {
+        this.fullNames = [];
+        this.nameToFullName = {
+            Siege: "Mighty Kat-A-Pult",
+            Ice: "Ice Cat",
+            Issun: "Issun Boshi",
+            "Prof Abyss": "Doktor Heaven",
+            Shishilan: "Togeluga",
+            Ushi: "Ushiwakamaru",
+            Emperor: "Emperor Cat",
+            Akuma: "Akuma",
+            Dartanyan: "D'artanyan",
+            Sirius: "Goddess of Light Sirius",
+        };
+    }
+    parse(data) {
+        const names = [];
+        for (const index in data) {
+            const item = data[index];
+            if (parseInt(index) % 2 == 0) {
+                names.push(item.replaceAll("’", "'").split(" - ")[0]);
+            }
+            else {
+                const [, realName] = item.match(new RegExp(".*/(.*)_\\(.*?\\)"));
+                this.fullNames.push(decodeURI(realName.replaceAll("_", " ")).replaceAll("’", "'"));
+            }
+        }
+        for (const index in names) {
+            this.nameToFullName[names[index]] = this.fullNames[index];
+            this.nameToFullName[this.fullNames[index]] = this.fullNames[index];
+        }
+        return this;
+    }
+}
+exports.default = DescriptionData;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class HtmlInjector {
+    constructor(tierList, unitToBanners, tierLabels, unitsRarity) {
+        this.tierList = tierList;
+        this.unitToBanners = unitToBanners;
+        this.tierLabels = tierLabels;
+        this.unitsRarity = unitsRarity;
+    }
+    inject() {
+        const elms = document.querySelectorAll(".cat a:first-child, .found_cats a:first-child, .cats label span");
+        const missed = new Set();
+        for (const el of elms) {
+            const unitName = el.textContent + "";
+            const tiers = this.tierList.asArray(unitName);
+            if (tiers) {
+                const htmlTiers = tiers
+                    .map((tier) => this.tierLabels.findByTier(tier))
+                    .map(({ tier, label }) => `<span title="${label}">[${tier}]</span>`);
+                el.innerHTML += `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
+            }
+            else {
+                missed.add(unitName);
+            }
+            const unitBanners = this.unitToBanners.asArray(unitName);
+            const elParent = el.parentElement;
+            if (unitBanners) {
+                elParent.innerHTML +=
+                    '<div class="vtvz-banners">' +
+                        unitBanners
+                            .map((banner) => `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`)
+                            .join(" | ") +
+                        "</div>";
+            }
+            if (elParent.classList.contains("cat")) {
+                elParent.classList.add("vtvz-" + this.unitsRarity.getRarity(unitName));
+            }
+        }
+        console.log("missed", missed);
+        var style = document.createElement("style");
+        const styleText = `
+    .vtvz-banners {
+      max-width: 350px;
+      font-size: 14px;
+    }
+
+    .vtvz-legend:not(.legend) {
+      border-top: 20px solid darkviolet;
+    }
+
+    .vtvz-uber:not(.uber):not(.uber_fest){
+      border-top: 20px solid red;
+    }
+
+    .vtvz-super:not(.supa):not(.supa_fest) {
+      border-top: 20px solid gold;
+    }
+
+    .vtvz-rare {
+    }
+
+    .vtvz-special {
+    }
+
+    .vtvz-normal {
+    }
+
+    .owned {
+      background-color: #34aeae !important;
+    }
+  `;
+        style.appendChild(document.createTextNode(styleText));
+        document.getElementsByTagName("head")[0].appendChild(style);
+    }
+}
+exports.default = HtmlInjector;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class TierLabels {
+    constructor() {
+        this.labels = new Map();
+        this.labels.set(/^TOP-/, "The best ubers. Spend everything you have to get them");
+        this.labels.set(/^Fest-/, "Uberfest and Epicfest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others");
+        this.labels.set(/-UT$/, "Tier with Ultra Talents consideration");
+        this.labels.set(/-UF$/, "Tier with Ultra Form consideration");
+    }
+    npChart(npChart) {
+        for (const npKey in npChart) {
+            this.labels.set("NP-" + npKey.toUpperCase(), npChart[npKey].label);
+        }
+        return this;
+    }
+    findByTier(tier) {
+        for (const [key, label] of this.labels.entries()) {
+            if (tier.match(key)) {
+                return { tier, label };
+            }
+        }
+        return { tier, label: "" };
+    }
+}
+exports.default = TierLabels;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class TierList {
+    constructor(descriptionData) {
+        this.tierList = new Map();
+        this.descriptionData = descriptionData;
+    }
+    addItem(key, value) {
+        if (!this.tierList[key]) {
+            this.tierList[key] = new Set();
+        }
+        this.tierList[key].add(value);
+    }
+    asArray(key) {
+        const val = this.tierList[key];
+        if (!val) {
+            return;
+        }
+        return [...val];
+    }
+    parse(tierListRaw) {
+        for (const item of tierListRaw) {
+            const [tier, unitsRaw] = item.split(" - ");
+            const units = unitsRaw.replaceAll("’", "'").split(", ");
+            for (const unit of units) {
+                let unitName = unit;
+                let unitTier = tier;
+                const withCond = unit.match(new RegExp("(.*) \\((.*)\\)"));
+                if (withCond) {
+                    let [, unitNameParsed, unitTierCond] = withCond;
+                    unitName = unitNameParsed;
+                    unitTier = `${unitTier}-${unitTierCond}`;
+                }
+                const fullName = this.descriptionData.nameToFullName[unitName];
+                if (!fullName) {
+                    console.log("don't have full name", unitName);
+                    continue;
+                }
+                this.addItem(fullName, unitTier);
+            }
+        }
+        return this;
+    }
+    npChart(npChart) {
+        for (const npKey in npChart) {
+            for (const fullName of npChart[npKey].units) {
+                this.addItem(fullName, "NP-" + npKey.toUpperCase());
+            }
+        }
+        return this;
+    }
+}
+exports.default = TierList;
+
+},{}],6:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const unitsRarity = {
+    "740_1": "legend",
+    "Izanami of Dusk": "legend",
+    "733_1": "legend",
+    "Daybreaker Izanagi": "legend",
+    "Emperor Cat": "legend",
+    "Kyosaka Nanaho": "legend",
+    Akuma: "legend",
+    "Gaia the Creator": "legend",
+    "Doktor Heaven": "legend",
+    Lumina: "legend",
+    "Black Zeus": "legend",
+    "Mighty Kristul Muu": "legend",
+    Legeluga: "legend",
+    "Wonder MOMOCO": "legend",
+    Ushiwakamaru: "legend",
+    "High Lord Babel": "legend",
+    "Headmistress Jeanne": "legend",
+    "Musashi Miyamoto": "legend",
+    "Cake Machine": "uber",
+    "756_1": "uber",
+    "Akechi Mitsuhide": "uber",
+    "Voluptuous Peony - Daji": "uber",
+    "Floral Kalisa": "uber",
+    "Frozen Rose Cat": "uber",
+    "735_1": "uber",
+    Pegasa: "uber",
+    "Ninja Girl Tomoe": "uber",
+    "Lightmother Aset": "uber",
+    "Hatsune Miku XVI": "uber",
+    "High School Kingpin Riki": "uber",
+    Tekachi: "uber",
+    "Mighty Sphinx Korps": "uber",
+    "Coastal Explorer Kanna": "uber",
+    Kaoluga: "uber",
+    "Betrothed Balaluga": "uber",
+    "Eva Unit-13": "uber",
+    "One-Eyed Asuka": "uber",
+    "King of Doom Phono": "uber",
+    "Rabbit Satoru": "uber",
+    "Thunder Jack": "uber",
+    "White Butler Vigler": "uber",
+    "Issun Boshi": "uber",
+    "Child of Destiny Phono": "uber",
+    "Reindeer Terun": "uber",
+    "Goddess of Light Sirius": "uber",
+    "Count Yukimura": "uber",
+    "Spectral Goth Vega": "uber",
+    Luke: "uber",
+    Sakura: "uber",
+    "Mighty Carrowsell": "uber",
+    ネコチーター: "uber",
+    "Ranma Saotome (Leotard)": "uber",
+    "Cat Tengu": "uber",
+    "Night Beach Lilin": "uber",
+    "Chronos the Bride": "uber",
+    "Sea Serpent Daliasan": "uber",
+    "Iz the Dancer of Grief": "uber",
+    Bliza: "uber",
+    "Hattori Hanzo": "uber",
+    "Lovestruck Lesser Demon": "uber",
+    "Huntress Terun": "uber",
+    "Sweet Love Mekako": "uber",
+    "Lucifer the Fallen": "uber",
+    "Iz the Dancer": "uber",
+    "White Knight Cyclops": "uber",
+    "Shitakiri Sparrow": "uber",
+    "Mighty Deth-Troy-R": "uber",
+    Yamii: "uber",
+    Furiluga: "uber",
+    "Kunio-kun": "uber",
+    "Hevijak the Wicked": "uber",
+    Lilin: "uber",
+    "Shiro Amakusa": "uber",
+    "Summoner Satoru": "uber",
+    "Kaguya of the Coast": "uber",
+    "Princess Cat": "uber",
+    "Dark Aegis Garu": "uber",
+    "Adventurer Kanna": "uber",
+    "Mousse (Duck)": "uber",
+    "Shampoo (Cat)": "uber",
+    "Ryoga Hibiki (Pig)": "uber",
+    "Akane Tendo": "uber",
+    "Ranma Saotome (M)": "uber",
+    "Blooming Kamukura": "uber",
+    "Mighty Aethur Ltd.": "uber",
+    "Snow Miku 2021": "uber",
+    "First-Love Myrcia": "uber",
+    "Sweet Aphrodite": "uber",
+    "Baby Garu": "uber",
+    "Keiji Claus": "uber",
+    "Hatsune Miku: MM2020 Tokyo": "uber",
+    "Hatsune Miku: MM2020 Osaka": "uber",
+    "M. Bison": "uber",
+    Sagat: "uber",
+    Vega: "uber",
+    Balrog: "uber",
+    "E. Honda": "uber",
+    "Skull Rider Vars": "uber",
+    Gravi: "uber",
+    Summerluga: "uber",
+    "Squirtgun Saki": "uber",
+    "Megurine Luka": "uber",
+    "Hell Warden Emma": "uber",
+    "Shaman Khan": "uber",
+    "The 9th Angel": "uber",
+    "The 10th Angel": "uber",
+    "The 6th Angel": "uber",
+    "The 4th Angel": "uber",
+    "Night Oracle Rei": "uber",
+    Papaluga: "uber",
+    "Kasli the Bane": "uber",
+    "Kagamine Rin & Len": "uber",
+    "Sakura Miku": "uber",
+    "Hatsune Miku": "uber",
+    "Hades the Punisher": "uber",
+    "Sharpshooter Saki": "uber",
+    Herme: "uber",
+    "Kasli the Scourge": "uber",
+    "Snow Angel Twinstars": "uber",
+    Kintaro: "uber",
+    Lasvoss: "uber",
+    Ken: "uber",
+    Dhalsim: "uber",
+    Blanka: "uber",
+    Zangief: "uber",
+    Guile: "uber",
+    "Chun-Li": "uber",
+    Ryu: "uber",
+    Eyewaltz: "uber",
+    "Relentless Gladios": "uber",
+    Myrcia: "uber",
+    "Narita Kaihime": "uber",
+    "Seabreeze Coppermine": "uber",
+    "AAA Wunder": "uber",
+    "Eva Unit-08": "uber",
+    Calette: "uber",
+    "Li'l Valkyrie Dark": "uber",
+    "Benevolent Souma": "uber",
+    Heracrist: "uber",
+    Satanmaria: "uber",
+    "Super Devil": "uber",
+    "Holy Phoenix": "uber",
+    "Super Zeus": "uber",
+    "Sakura Matou": "uber",
+    "D'arktanyan": "uber",
+    Bebe: "uber",
+    "Empress Chronos": "uber",
+    "Waverider Kuu": "uber",
+    Nobiluga: "uber",
+    "Li'l Valkyrie": "uber",
+    "Detective Vigler": "uber",
+    "Cat Clan Heroes": "uber",
+    "Mighty Thermae D-Lux": "uber",
+    "Moon Operators": "uber",
+    "Shinji Cat": "uber",
+    "Eva Unit-02": "uber",
+    "Eva Unit-01": "uber",
+    "Eva Unit-00": "uber",
+    Voli: "uber",
+    "Sakura Sonic": "uber",
+    Ganglion: "uber",
+    "Miyabi Oyama": "uber",
+    "Subaru Hoshi": "uber",
+    "Saki Nijima": "uber",
+    "D'artanyan": "uber",
+    "Dark Mitama": "uber",
+    Gilgamesh: "uber",
+    Rider: "uber",
+    Lancer: "uber",
+    Archer: "uber",
+    Illyasviel: "uber",
+    "Rin Tohsaka": "uber",
+    Saber: "uber",
+    Aer: "uber",
+    Mizli: "uber",
+    Bora: "uber",
+    "Graveflower Verbena": "uber",
+    "Wolfchild Deale": "uber",
+    "Mighty Rekon Korps": "uber",
+    "Seashore Kai": "uber",
+    Twinstars: "uber",
+    Todomeki: "uber",
+    Michelia: "uber",
+    "Lost World Yuki": "uber",
+    "Imagawa Yoshimoto": "uber",
+    "HMS Princess": "uber",
+    "Queen Reika": "uber",
+    "Sea Maiden Ruri": "uber",
+    "Trickster Himeyuri": "uber",
+    "Shadow Gao": "uber",
+    "Bunny & Canard": "uber",
+    "Springtime Kenshin": "uber",
+    Mobius: "uber",
+    Sarukani: "uber",
+    "Miko Mitama": "uber",
+    "Wrathful Poseidon": "uber",
+    "Yuletide Nurse": "uber",
+    "Mighty Bomburr": "uber",
+    "Mighty Drednot": "uber",
+    "Mighty Kat-A-Pult": "uber",
+    "Lilith Cat": "uber",
+    "Kyoko Sakura": "uber",
+    "Mami Tomoe": "uber",
+    "Sayaka Miki": "uber",
+    "Homura Akemi": "uber",
+    "Madoka Kaname": "uber",
+    "Strike Unit R.E.I.": "uber",
+    "Pai-Pai": "uber",
+    "Midsummer Rabbit": "uber",
+    "Tropical Kalisa": "uber",
+    "Splendid Ganesha": "uber",
+    "Shining Amaterasu": "uber",
+    "Crazed Yuki": "uber",
+    "Baby Gao": "uber",
+    Hayabusa: "uber",
+    "Radiant Aphrodite": "uber",
+    "Anubis the Protector": "uber",
+    "Thunder God Zeus": "uber",
+    "Holy Coppermine": "uber",
+    "Santa Kuu": "uber",
+    "Frosty Kai": "uber",
+    Togeluga: "uber",
+    "Spooky Thundia": "uber",
+    Hallowindy: "uber",
+    "Warlock and Pierre": "uber",
+    "HI-DO": "uber",
+    "DONALD MORDEN": "uber",
+    "JUPITER KING": "uber",
+    "HUGE HERMIT": "uber",
+    "The White Rabbit": "uber",
+    "Kachi-Kachi": "uber",
+    Catman: "uber",
+    "Mekako Saionji": "uber",
+    Akira: "uber",
+    Mystica: "uber",
+    Juvens: "uber",
+    Cornelia: "uber",
+    Hearscht: "uber",
+    "Mystery Girl Yuki": "uber",
+    Dioramos: "uber",
+    "Mola King": "uber",
+    Balaluga: "uber",
+    Tecoluga: "uber",
+    Kubiluga: "uber",
+    Asiluga: "uber",
+    "Crazed Princess Punt": "uber",
+    Kalisa: "uber",
+    "Uesugi Kenshin": "uber",
+    "Nurse Cat": "uber",
+    "Princess Kaguya": "uber",
+    "Kasa Jizo": "uber",
+    Momotaro: "uber",
+    "The Grateful Crane": "uber",
+    "Urashima Taro": "uber",
+    "Takeda Shingen": "uber",
+    "Date Masamune": "uber",
+    Wyvern: "uber",
+    Coppermine: "uber",
+    Kai: "uber",
+    Kuu: "uber",
+    Raiden: "uber",
+    Kamukura: "uber",
+    Vars: "uber",
+    Megidora: "uber",
+    Sodom: "uber",
+    Thundia: "uber",
+    Windy: "uber",
+    "Oda Nobunaga": "uber",
+    "Maeda Keiji": "uber",
+    "Sanada Yukimura": "uber",
+    PPT48: "uber",
+    "Baby Cat": "uber",
+    "Marauder Cat": "uber",
+    "Evangelist Cat": "uber",
+    "Lesser Demon Cat": "uber",
+    "Cat Machine": "uber",
+    "Ice Cat": "uber",
+    Nekoluga: "uber",
+    "Ancient Egg: N111": "super",
+    "Ancient Egg: N108": "super",
+    "Brainwashed Titan Cat": "super",
+    "Brainwashed Lizard Cat": "super",
+    "Brainwashed Fish Cat": "super",
+    "Genma Saotome (Panda)": "super",
+    "Brainwashed Bird Cat": "super",
+    "Brainwashed Cow Cat": "super",
+    "Brainwashed Gross Cat": "super",
+    "Brainwashed Axe Cat": "super",
+    "Brainwashed Tank Cat": "super",
+    "Brainwashed Cat": "super",
+    "Tatewaki Kuno (Gi)": "super",
+    "Ukyo Kuonji (GR)": "super",
+    Happosai: "super",
+    "KAITO & Cat": "super",
+    "Valentine's Neneko": "super",
+    "C. Honda": "super",
+    "Lifeguard Cats": "super",
+    "Suntan Cat": "super",
+    "MEIKO & Cat": "super",
+    "Holy Knight Alibaba": "super",
+    "Nymph Cat": "super",
+    "Good-Luck Ebisu": "super",
+    "Rei Ayanami (???)": "super",
+    "Ritsuko Akagi": "super",
+    "Misato Katsuragi": "super",
+    Hina: "super",
+    "Fiendish Nero": "super",
+    "Kotomine & Gilgamesh Cats": "super",
+    "Miter Saw Cat": "super",
+    "Backhoe Cat": "super",
+    "Cutter Cat": "super",
+    "Piledriver Cat": "super",
+    "Driller Cat": "super",
+    "Otaku Geek Cat": "super",
+    "Mari Illustrious": "super",
+    "Asuka Langley": "super",
+    "Rei Ayanami": "super",
+    "Hijiri Rokudo": "super",
+    "Mizuki Tachibana": "super",
+    "Aoi Hayakawa": "super",
+    "Fencer Cat": "super",
+    Orthos: "super",
+    "Easter Neneko": "super",
+    Belial: "super",
+    "Years-End Neneko": "super",
+    "Vaulter Cat": "super",
+    Kyubey: "super",
+    "Little Leaguer Cat": "super",
+    "Express Cat": "super",
+    "Sunny Neneko": "super",
+    "Cheerleader Cat": "super",
+    Catornado: "super",
+    Catway: "super",
+    "Sniper the Recruit": "super",
+    "Rich Cat III": "super",
+    "Freshman Cat Jobs": "super",
+    "Gloomy Neneko": "super",
+    "ALLEN O'NEIL": "super",
+    "SV-001": "super",
+    "Metal Cat": "super",
+    "Surfer Cat": "super",
+    Citrouille: "super",
+    Alois: "super",
+    "Baby Mola": "super",
+    Yurinchi: "super",
+    "Cat Toaster": "super",
+    "Figure Skating Cats": "super",
+    "Weightlifter Cat": "super",
+    "Juliet Cat": "super",
+    "Cat Base Mini": "super",
+    Neneko: "super",
+    "Gold Cat": "super",
+    Rei: "super",
+    Aura: "super",
+    "Crazed Titan Cat": "super",
+    "Crazed Lizard Cat": "super",
+    "Crazed Fish Cat": "super",
+    "Crazed Bird Cat": "super",
+    "Crazed Cow Cat": "super",
+    "Crazed Gross Cat": "super",
+    "Crazed Axe Cat": "super",
+    "Crazed Tank Cat": "super",
+    "Crazed Cat": "super",
+    "Sleeping Beauty Punt": "super",
+    Reaper: "super",
+    "Sushi Cat": "super",
+    "Bath Cat": "super",
+    "Apple Cat": "super",
+    "Swimmer Cat": "super",
+    "Nerd Cat": "super",
+    "Kotatsu Cat": "super",
+    "Hip Hop Cat": "super",
+    "Delinquent Cat": "super",
+    "Bodhisattva Cat": "super",
+    Madhead: "rare",
+    "Mollyanna Cat": "rare",
+    "Ancient Egg: N112": "rare",
+    "Maize Cat": "rare",
+    "Ancient Egg: N110": "rare",
+    "Jetpack Cat": "rare",
+    "Ancient Egg: N109": "rare",
+    "Ancient Egg: N107": "rare",
+    "Killer Tank Cat": "rare",
+    "Yuma Kuga & Cat": "rare",
+    "Osamu Mikumo & Cat": "rare",
+    "Ancient Egg: N106": "rare",
+    "Ancient Egg: N105": "rare",
+    "Ancient Egg: N104": "rare",
+    "Ancient Egg: N103": "rare",
+    "Ancient Egg: N102": "rare",
+    "Ancient Egg: N101": "rare",
+    "Calligraphy Cat": "rare",
+    "Pied Piper Cat": "rare",
+    "Aku Researcher": "rare",
+    "Godzilla Cat": "rare",
+    "Akane Cat": "rare",
+    "Ranma Cat (M)": "rare",
+    "Neko Len": "rare",
+    "Neko Rin": "rare",
+    "Stone Cat": "rare",
+    "M. Bison Cat": "rare",
+    "Sagat Cat": "rare",
+    "Vega Cat": "rare",
+    "Balrog Cat": "rare",
+    "Luka Cat": "rare",
+    "Bakery Cat": "rare",
+    "Kaworu Cat": "rare",
+    "Phantom Cat": "rare",
+    "Rugby Cat": "rare",
+    "Miku Cat": "rare",
+    "Teacher BearCat": "rare",
+    "Cossack Cat": "rare",
+    "Slime Cat": "rare",
+    "Wushu Cat": "rare",
+    "Medusa Cat": "rare",
+    "Akuma Giraffe": "rare",
+    "Ryu Cat": "rare",
+    Mightycat: "rare",
+    "Cat Bros": "special",
+    "Matador Cat": "rare",
+    "Kano ＆ Souma": "rare",
+    "Prince Yamato": "rare",
+    "Rider the Cat": "rare",
+    "Archer the Cat": "rare",
+    "Primordial Cat": "rare",
+    "Lone Cat and Kitten": "rare",
+    Betakkuma: "rare",
+    "Souma Cat": "rare",
+    Coco: "rare",
+    Ovis: "rare",
+    Pokota: "rare",
+    "Mari Cat": "rare",
+    "Asuka Cat": "rare",
+    "Rei Cat": "rare",
+    "Giraffe Unit-01": "rare",
+    "Shinji & Cat": "rare",
+    Mentori: "rare",
+    "Karin Nekozuka": "rare",
+    "Ren Katagiri": "rare",
+    "Misaki Konno": "rare",
+    "Sairi Nijitani": "rare",
+    "Akio Yabe": "rare",
+    "Glass Cat": "rare",
+    "Volley Cat": "rare",
+    "Rover Cat": "rare",
+    "Li'l Shirou": "rare",
+    "Illya the Cat": "rare",
+    "Rin the Cat": "rare",
+    "Sakura the Cat": "rare",
+    "Slug Jockey Cat": "rare",
+    "Redhead Yuki Cat": "rare",
+    "Eggy Cat": "rare",
+    "Welterweight Cat": "rare",
+    "Curling Cat": "rare",
+    "Killer Cat": "rare",
+    PIKOTARO: "rare",
+    "Gardener Cat": "rare",
+    "Food Stall Cat": "rare",
+    "Kyubey Cat": "rare",
+    "Li'l Madoka": "rare",
+    "Kyoko Cat": "rare",
+    "Mami Cat": "rare",
+    "Sayaka Cat": "rare",
+    "Homura Cat": "rare",
+    "Madoka Cat": "rare",
+    "Awa-Odori Cat": "rare",
+    Funghi: "rare",
+    "A Gift of Cats": "rare",
+    Pumpcat: "rare",
+    "MARS PEOPLE": "rare",
+    FIO: "rare",
+    ERI: "rare",
+    TARMA: "rare",
+    MARCO: "rare",
+    HYAKUTARO: "rare",
+    "Drumcorps Cat": "rare",
+    "Onmyoji Cat": "rare",
+    Psychocat: "rare",
+    "Cat Kart R": "rare",
+    "Takuya ＆ Yuki": "rare",
+    "Marshmallow Cat": "rare",
+    "Hoop Cat": "rare",
+    "Mer-Cat": "rare",
+    "Rocker Cat": "rare",
+    "Tin Cat": "rare",
+    "Stilts Cat": "rare",
+    "Cat Gunslinger": "rare",
+    "Kung Fu Cat X": "rare",
+    "Vengeful Cat": "rare",
+    "Clockwork Cat": "rare",
+    "Vacation Queen": "rare",
+    Fuu: "rare",
+    Serum: "rare",
+    Yoichi: "rare",
+    Norn: "rare",
+    Olga: "rare",
+    Nono: "rare",
+    Celesse: "rare",
+    "Madam Bride": "rare",
+    "Koi Cat": "rare",
+    "Maiden Cat": "rare",
+    "Rope Jump Cat": "rare",
+    "Doll Cats": "rare",
+    "Evil Cat": "rare",
+    "Adult Cat": "rare",
+    "Space Cat": "rare",
+    "Droid Cat": "rare",
+    "Reindeer Fish Cat": "rare",
+    "Salaryman Cat": "rare",
+    "Li'l Gau": "rare",
+    "Cow Princess": "rare",
+    Swordsman: "rare",
+    "Sports Day Cat": "rare",
+    "Bronze Cat": "rare",
+    "Swordsman Cat": "rare",
+    "Archer Cat": "rare",
+    "Witch Cat": "rare",
+    "Shaman Cat": "rare",
+    "Fortune Teller Cat": "rare",
+    "Bishop Cat": "rare",
+    "Thief Cat": "rare",
+    "Pirate Cat": "rare",
+    "Viking Cat": "rare",
+    "Jurassic Cat": "rare",
+    "Salon Cat": "rare",
+    "Wheel Cat": "rare",
+    "Pogo Cat": "rare",
+    "Ancient Egg: N205": "special",
+    "Dotty Cat": "special",
+    "Felix the Cat Duke Cat": "special",
+    "Trash Cat": "special",
+    "Principal Cat": "special",
+    "730_1": "special",
+    "Master of Mind Soractes": "special",
+    "Ancient Egg: N006": "special",
+    "Ancient Egg: N203": "special",
+    "Ancient Egg: N005": "special",
+    "Class Rep Cat": "special",
+    "Ancient Egg: N000": "special",
+    "Ancient Egg: N004": "special",
+    "Chika Amatori & Cat": "special",
+    "Ancient Egg: N202": "special",
+    "Ancient Egg: N003": "special",
+    "Ancient Egg: N201": "special",
+    "Ancient Egg: N001": "special",
+    "Elder Beast Naala": "special",
+    "Chalkboard Eraser Cat": "special",
+    "Tomboy Lion Cat": "special",
+    "Secret Crush Cat": "special",
+    "Firecracker Cat": "special",
+    "Million-Dollar Cat": "special",
+    "Jagando Jr.": "special",
+    "Kuwagata Cat": "special",
+    "Kabuto Cat": "special",
+    "Elder Mask Doron": "special",
+    "Gold Brick Cat": "special",
+    "Panda Cat": "special",
+    "Idi:N": "special",
+    "Gacha Cat": "special",
+    "Heavenly Jack": "special",
+    "Master Uril": "special",
+    "Urs & Fenrir": "special",
+    "Chun-Li Cat": "special",
+    "Shakurel Panda": "special",
+    "Shakurel Tiger": "special",
+    "Shakurel Lion": "special",
+    "Shakurel Cat": "special",
+    Nekonosuke: "special",
+    "Cat Devil": "special",
+    "Wakamiko Cat": "special",
+    "Rosary Angel": "special",
+    Dogumaru: "special",
+    "Filibuster Cat X": "special",
+    "Shirou the Cat": "special",
+    "Cat God the Great": "special",
+    Nekokkuma: "special",
+    "Mecha-Bun": "special",
+    "Crazed Moneko": "special",
+    "Kaworu & Cat": "special",
+    "Gendo & Fuyutsuki Cats": "special",
+    Imoto: "special",
+    "Satori Hikami & Cat": "special",
+    "Masked Yulala": "special",
+    "Farmer Cat": "special",
+    "Coin Cat": "special",
+    "Li'l Sakura": "special",
+    "Saber the Cat": "special",
+    "Hermit Cat": "special",
+    "Maneki Cat": "special",
+    "Happy 100": "special",
+    "Miyamoku Musashi": "special",
+    CPAC: "special",
+    "Li'l Titan Cat": "special",
+    "Li'l Lizard Cat": "special",
+    "Li'l Fish Cat": "special",
+    "Li'l Homura": "special",
+    Fortressy: "special",
+    "White Cat": "special",
+    Tanky: "special",
+    "Red Riding Mina": "special",
+    "Undead Cat": "special",
+    "Li'l Bird Cat": "special",
+    "Li'l Cow Cat": "special",
+    "Li'l Gross Cat": "special",
+    Catburger: "special",
+    "Li'l Axe Cat": "special",
+    "Li'l Tank Cat": "special",
+    "Li'l Cat": "special",
+    "Baozi Cat": "special",
+    Titi: "special",
+    "Mr. Ninja": "special",
+    "Yuki Cat": "special",
+    "Meowla Meowla": "special",
+    "Li'l Nyandam": "special",
+    God: "special",
+    "Squish Ball Cat": "special",
+    "Ururun Wolf": "special",
+    "Flower Cat": "special",
+    "Bean Cats": "special",
+    Merc: "special",
+    Healer: "special",
+    "Cabaret Cat": "special",
+    "Blue Shinobi": "special",
+    "Toy Machine Cat": "special",
+    "Maiko Cat": "special",
+    "Masked Cat": "special",
+    "Capsule Cat": "special",
+    "Cat Princess": "special",
+    Kerihime: "special",
+    "Bahamut Cat": "special",
+    "Valkyrie Cat": "special",
+    "Skirt Cat": "special",
+    "Boogie Cat": "special",
+    "Sumo Cat": "special",
+    "Samurai Cat": "special",
+    "Zombie Cat": "special",
+    "Ninja Cat": "special",
+    "Tricycle Cat": "special",
+    Moneko: "special",
+    "Panties Cat": "special",
+    "Cats in a Box": "special",
+    "Dom Cat": "special",
+    "Bondage Cat": "special",
+    "Mr.": "special",
+    "Kung Fu Cat": "special",
+    "Actress Cat": "special",
+    Superfeline: "normal",
+    "Titan Cat": "normal",
+    "Lizard Cat": "normal",
+    "Fish Cat": "normal",
+    "Bird Cat": "normal",
+    "Cow Cat": "normal",
+    "Gross Cat": "normal",
+    "Axe Cat": "normal",
+    "Tank Cat": "normal",
+    Cat: "normal",
+};
+class UnitsRarity {
+    getRarity(unitName) {
+        return unitsRarity[unitName] || "unknown";
+    }
+}
+exports.default = UnitsRarity;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const banners = [
     {
         title: "Dynasty Fest",
         link: "https://battle-cats.fandom.com/wiki/Dynasty_Fest_(Gacha_Event)",
@@ -909,11 +1810,12 @@ exports.default = [
         units: ["High School Kingpin Riki", "Kunio-kun"],
     },
 ];
+exports.default = banners;
 
-},{}],2:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = [
+const data = [
     "Ice Cat - Extremely powerful backliner from her strengthen ultra talent and very strong anti red/ metal CC. Has great compatibility in freezing and controlling both traits due to her common range advantage against melee, good uptime, and stackability. She roughly matches the DPS of Gao through strengthen except carries advantages such as super high mobility and cheap cost, is stunted by low HP.",
     "https://battle-cats.fandom.com/wiki/Ice_Cat_(Uber_Rare_Cat)",
     "Cat Machine - Very good anti red/ alien tank with very cheap cost, fast cooldown, and high speed. Also has wave blocker to counter wave enemies as well as very strong offense, however he carries a very long foreswing which can cause him to miss attacks or get left behind which somewhat damages his wave blocking skill. Struggles from niche overlaps from Roe, Soap, and Octopus from which Cat Machine is generally used as extra defense alongside them.",
@@ -1184,26 +2086,27 @@ exports.default = [
     "Izanami - Extremely powerful anti traitless with huge burst damage from savage blow and wide AOE with staggering LD and area attacks. Has high bulk and operates similarly to Naala akin to normal Izanagi’s role. Good bulk, high damage, and high pierce leads to insanely good anti traitless matchups and becomes easily usable on stages with any sort of frontliner. Immunities such as surge, curse, and freeze immune allow for better traitless matchups and total destruction against traitless surge bosses. Lacks wave immunity and is unfortunately complete shit in general stats making her only usable within traitless niche, harboring one of the worst base LD DPS out of any uber/ legend rare.",
     "https://battle-cats.fandom.com/wiki/Izanami_of_Dusk_(Legend_Rare_Cat)",
 ];
+exports.default = data;
 
-},{}],3:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tierListRaw = exports.npChart = exports.banners = exports.data = void 0;
-var data_1 = require("./data");
-Object.defineProperty(exports, "data", { enumerable: true, get: function () { return data_1.default; } });
-var banners_1 = require("./banners");
-Object.defineProperty(exports, "banners", { enumerable: true, get: function () { return banners_1.default; } });
-var npChart_1 = require("./npChart");
-Object.defineProperty(exports, "npChart", { enumerable: true, get: function () { return npChart_1.default; } });
+exports.descriptionsDataRaw = exports.tierListRaw = exports.npChartRaw = exports.bannersRaw = void 0;
+var bannersRaw_1 = require("./bannersRaw");
+Object.defineProperty(exports, "bannersRaw", { enumerable: true, get: function () { return bannersRaw_1.default; } });
+var npChartRaw_1 = require("./npChartRaw");
+Object.defineProperty(exports, "npChartRaw", { enumerable: true, get: function () { return npChartRaw_1.default; } });
 var tierListRaw_1 = require("./tierListRaw");
 Object.defineProperty(exports, "tierListRaw", { enumerable: true, get: function () { return tierListRaw_1.default; } });
+var descriptionsDataRaw_1 = require("./descriptionsDataRaw");
+Object.defineProperty(exports, "descriptionsDataRaw", { enumerable: true, get: function () { return descriptionsDataRaw_1.default; } });
 
-},{"./banners":1,"./data":2,"./npChart":4,"./tierListRaw":5}],4:[function(require,module,exports){
+},{"./bannersRaw":7,"./descriptionsDataRaw":8,"./npChartRaw":10,"./tierListRaw":11}],10:[function(require,module,exports){
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // from NP Chart
 // https://imgur.com/a/np-charts-9rAfl93
-exports.default = {
+Object.defineProperty(exports, "__esModule", { value: true });
+const npChart = {
     sell: {
         label: "Just sell them",
         units: [
@@ -1272,11 +2175,15 @@ exports.default = {
         ],
     },
 };
+exports.default = npChart;
 
-},{}],5:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
+// Wrap and join
+// ^v$hS"A,Jj
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = [
+exports.tierListRaw = void 0;
+exports.tierListRaw = [
     "TOP-1 - Dark Kasli",
     "TOP-2 - Phono",
     "TOP-3 - Balrog",
@@ -1287,12 +2194,12 @@ exports.default = [
     "TOP-8 - Yukimura",
     "TOP-9 - Chronos",
     "TOP-10 - Sirius",
-    "S - Balrog, Lasvoss, Yukimura, Keiji, Kuu (UT), Kalisa, Windy (UF), Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
+    "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Kalisa, Windy (UF), Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
     "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Dioramos (UT), Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri",
-    "B - Momoco, Ice, Cat Machine, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Ganglion, Hevijak, Raiden (UT), Gamereon, Cosmo, Kaguya (UF), Issun, Shitakiri, Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
-    "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Terun, Vars, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
-    "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
-    "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Blizana, Verbena, Nekoluga, Kaoluga",
+    "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Gamereon, Cosmo, Kaguya (UF), Issun, Shitakiri, Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
+    "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gundros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
+    "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
+    "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Envanz, Aer, Blizana, Verbena, Nekoluga, Kaoluga",
     "F - Oda, Myrcia, Nobiluga, Papaluga",
     "S - Izanagi",
     "A - Gaia, Nanaho, Black Zeus, Izanami, Ushi, Muu, Lumina",
@@ -1309,155 +2216,31 @@ exports.default = [
     // NOTE: PATCH
     "E - Envanz",
 ];
+exports.default = exports.tierListRaw;
 
-},{}],6:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const data_1 = require("./data");
-const tierLabels = new Map();
-tierLabels.set(/^TOP-/, "The best ubers. Spend everything you have to get them");
-tierLabels.set(/^Fest-/, "Uberfest and Epicfest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others");
-tierLabels.set(/-UT$/, "Tier with Ultra Talents consideration");
-tierLabels.set(/-UF$/, "Tier with Ultra Form consideration");
-const names = [];
-const fullNames = [];
-for (const index in data_1.data) {
-    const item = data_1.data[index];
-    if (parseInt(index) % 2 == 0) {
-        names.push(item.replaceAll("’", "'").split(" - ")[0]);
-    }
-    else {
-        const [, realName] = item.match(new RegExp(".*/(.*)_\\(.*?\\)"));
-        fullNames.push(decodeURI(realName.replaceAll("_", " ")).replaceAll("’", "'"));
-    }
-}
-const nameToFullName = {
-    Siege: "Mighty Kat-A-Pult",
-    Ice: "Ice Cat",
-    Issun: "Issun Boshi",
-    "Prof Abyss": "Doktor Heaven",
-    Shishilan: "Togeluga",
-    Ushi: "Ushiwakamaru",
-    Emperor: "Emperor Cat",
-    Akuma: "Akuma",
-    Dartanyan: "D'artanyan",
-    Sirius: "Goddess of Light Sirius",
-};
-for (const index in names) {
-    nameToFullName[names[index]] = fullNames[index];
-    nameToFullName[fullNames[index]] = fullNames[index];
-}
-const tierList = {};
-tierList.addItem = (key, value) => {
-    if (!tierList[key]) {
-        tierList[key] = new Set();
-    }
-    tierList[key].add(value);
-};
-tierList.asArray = (key) => {
-    const val = tierList[key];
-    if (!val) {
-        return;
-    }
-    return [...val];
-};
-for (const item of data_1.tierListRaw) {
-    const [tier, unitsRaw] = item.split(" - ");
-    const units = unitsRaw.replaceAll("’", "'").split(", ");
-    for (const unit of units) {
-        let unitName = unit;
-        let unitTier = tier;
-        const withCond = unit.match(new RegExp("(.*) \\((.*)\\)"));
-        if (withCond) {
-            let [, unitNameParsed, unitTierCond] = withCond;
-            unitName = unitNameParsed;
-            unitTier = `${unitTier}-${unitTierCond}`;
-        }
-        const fullName = nameToFullName[unitName];
-        if (!fullName) {
-            console.log("don't have full name", unitName);
-            continue;
-        }
-        tierList.addItem(fullName, unitTier);
-    }
-}
-for (const npKey in data_1.npChart) {
-    tierLabels.set("NP-" + npKey.toUpperCase(), data_1.npChart[npKey].label);
-    for (const fullName of data_1.npChart[npKey].units) {
-        tierList.addItem(fullName, "NP-" + npKey.toUpperCase());
-    }
-}
-const unitToBanners = {};
-unitToBanners.addItem = (key, value) => {
-    if (!unitToBanners[key]) {
-        unitToBanners[key] = new Set();
-    }
-    unitToBanners[key].add(value);
-};
-unitToBanners.asArray = (key) => {
-    const val = unitToBanners[key];
-    if (!val) {
-        return;
-    }
-    return [...val];
-};
-for (const banner of data_1.banners) {
-    for (const fullName of banner.units) {
-        unitToBanners.addItem(fullName, banner);
-    }
-}
-console.log("tierList", tierList);
-for (const fullName of fullNames) {
-    if (!tierList[fullName]) {
+const TierList_1 = require("./TierList");
+const DescriptionData_1 = require("./DescriptionData");
+const Banners_1 = require("./Banners");
+const TierLabels_1 = require("./TierLabels");
+const UnitsRarity_1 = require("./UnitsRarity");
+const HtmlInjector_1 = require("./HtmlInjector");
+const descriptionData = new DescriptionData_1.default().parse(data_1.descriptionsDataRaw);
+const tierLabels = new TierLabels_1.default().npChart(data_1.npChartRaw);
+const tierList = new TierList_1.default(descriptionData)
+    .parse(data_1.tierListRaw)
+    .npChart(data_1.npChartRaw);
+const unitToBanners = new Banners_1.default().parse(data_1.bannersRaw);
+for (const fullName of descriptionData.fullNames) {
+    if (!tierList.asArray(fullName)) {
         console.log(`${fullName} is not found in tierlist`);
     }
 }
 if (typeof window !== "undefined") {
-    const elms = document.querySelectorAll(".cat a:first-child, .found_cats a:first-child, .cats label span");
-    const missed = new Set();
-    for (const el of elms) {
-        const text = el.textContent;
-        const tiers = tierList.asArray(text);
-        if (tiers) {
-            const htmlTiers = tiers
-                .map((tier) => {
-                const found = [...tierLabels.entries()].find(([key, _]) => tier.match(key));
-                if (found) {
-                    return [tier, found[1]];
-                }
-                return [tier, ""];
-            })
-                .map(([tier, label]) => `<span title="${label}">[${tier}]</span>`);
-            el.innerHTML += `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
-        }
-        else {
-            missed.add(text);
-        }
-        const unitBanners = unitToBanners.asArray(text);
-        if (unitBanners) {
-            el.parentElement.innerHTML +=
-                '<div class="vtvz-banners">' +
-                    unitBanners
-                        .map((banner) => `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`)
-                        .join(" | ") +
-                    "</div>";
-        }
-    }
-    console.log("missed", missed);
-    var style = document.createElement("style");
-    style.type = "text/css";
-    const styleText = `
-    .vtvz-banners {
-      max-width: 350px;
-      font-size: 14px;
-    }
-
-    .owned {
-      background-color: #34aeae !important;
-    }
-  `;
-    style.appendChild(document.createTextNode(styleText));
-    document.getElementsByTagName("head")[0].appendChild(style);
+    new HtmlInjector_1.default(tierList, unitToBanners, tierLabels, new UnitsRarity_1.default()).inject();
 }
 
-},{"./data":3}]},{},[6]);
+},{"./Banners":1,"./DescriptionData":2,"./HtmlInjector":3,"./TierLabels":4,"./TierList":5,"./UnitsRarity":6,"./data":9}]},{},[12]);
