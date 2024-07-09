@@ -540,6 +540,7 @@ export default data;
 
 export class DescriptionData {
   fullNames: string[] = [];
+
   nameToFullName: { [key: string]: string } = {
     Siege: "Mighty Kat-A-Pult",
     Ice: "Ice Cat",

@@ -1,4 +1,5 @@
 import { DescriptionData, banners, npChart, tierListRaw } from "./data";
+import { TierList } from "./data/tierListRaw";
 
 const descriptionData = new DescriptionData().parse();
 
@@ -14,50 +15,7 @@ tierLabels.set(
 tierLabels.set(/-UT$/, "Tier with Ultra Talents consideration");
 tierLabels.set(/-UF$/, "Tier with Ultra Form consideration");
 
-const tierList: any = {};
-
-tierList.addItem = (key, value) => {
-  if (!tierList[key]) {
-    tierList[key] = new Set();
-  }
-  tierList[key].add(value);
-};
-
-tierList.asArray = (key) => {
-  const val = tierList[key];
-  if (!val) {
-    return;
-  }
-  return [...val];
-};
-
-for (const item of tierListRaw) {
-  const [tier, unitsRaw] = item.split(" - ");
-
-  const units = unitsRaw.replaceAll("’", "'").split(", ");
-
-  for (const unit of units) {
-    let unitName = unit;
-    let unitTier = tier;
-
-    const withCond = unit.match(new RegExp("(.*) \\((.*)\\)"));
-    if (withCond) {
-      let [, unitNameParsed, unitTierCond] = withCond;
-
-      unitName = unitNameParsed;
-      unitTier = `${unitTier}-${unitTierCond}`;
-    }
-
-    const fullName = descriptionData.nameToFullName[unitName];
-
-    if (!fullName) {
-      console.log("don't have full name", unitName);
-
-      continue;
-    }
-    tierList.addItem(fullName, unitTier);
-  }
-}
+const tierList = new TierList(descriptionData).parse();
 
 for (const npKey in npChart) {
   tierLabels.set("NP-" + npKey.toUpperCase(), npChart[npKey].label);
@@ -93,7 +51,7 @@ for (const banner of banners) {
 console.log("tierList", tierList);
 
 for (const fullName of descriptionData.fullNames) {
-  if (!tierList[fullName]) {
+  if (!tierList.asArray(fullName)) {
     console.log(`${fullName} is not found in tierlist`);
   }
 }
