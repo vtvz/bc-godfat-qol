@@ -1,4 +1,6 @@
-import { data, banners, npChart, tierListRaw } from "./data";
+import { DescriptionData, banners, npChart, tierListRaw } from "./data";
+
+const descriptionData = new DescriptionData().parse();
 
 const tierLabels = new Map();
 tierLabels.set(
@@ -11,39 +13,6 @@ tierLabels.set(
 );
 tierLabels.set(/-UT$/, "Tier with Ultra Talents consideration");
 tierLabels.set(/-UF$/, "Tier with Ultra Form consideration");
-
-const names = [];
-const fullNames = [];
-
-for (const index in data) {
-  const item = data[index];
-  if (parseInt(index) % 2 == 0) {
-    names.push(item.replaceAll("’", "'").split(" - ")[0]);
-  } else {
-    const [, realName] = item.match(new RegExp(".*/(.*)_\\(.*?\\)"));
-    fullNames.push(
-      decodeURI(realName.replaceAll("_", " ")).replaceAll("’", "'"),
-    );
-  }
-}
-
-const nameToFullName = {
-  Siege: "Mighty Kat-A-Pult",
-  Ice: "Ice Cat",
-  Issun: "Issun Boshi",
-  "Prof Abyss": "Doktor Heaven",
-  Shishilan: "Togeluga",
-  Ushi: "Ushiwakamaru",
-  Emperor: "Emperor Cat",
-  Akuma: "Akuma",
-  Dartanyan: "D'artanyan",
-  Sirius: "Goddess of Light Sirius",
-};
-
-for (const index in names) {
-  nameToFullName[names[index]] = fullNames[index];
-  nameToFullName[fullNames[index]] = fullNames[index];
-}
 
 const tierList: any = {};
 
@@ -79,7 +48,7 @@ for (const item of tierListRaw) {
       unitTier = `${unitTier}-${unitTierCond}`;
     }
 
-    const fullName = nameToFullName[unitName];
+    const fullName = descriptionData.nameToFullName[unitName];
 
     if (!fullName) {
       console.log("don't have full name", unitName);
@@ -123,7 +92,7 @@ for (const banner of banners) {
 
 console.log("tierList", tierList);
 
-for (const fullName of fullNames) {
+for (const fullName of descriptionData.fullNames) {
   if (!tierList[fullName]) {
     console.log(`${fullName} is not found in tierlist`);
   }

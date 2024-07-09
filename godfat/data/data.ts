@@ -1,4 +1,4 @@
-export default [
+const data = [
   "Ice Cat - Extremely powerful backliner from her strengthen ultra talent and very strong anti red/ metal CC. Has great compatibility in freezing and controlling both traits due to her common range advantage against melee, good uptime, and stackability. She roughly matches the DPS of Gao through strengthen except carries advantages such as super high mobility and cheap cost, is stunted by low HP.",
 
   "https://battle-cats.fandom.com/wiki/Ice_Cat_(Uber_Rare_Cat)",
@@ -535,3 +535,44 @@ export default [
 
   "https://battle-cats.fandom.com/wiki/Izanami_of_Dusk_(Legend_Rare_Cat)",
 ];
+
+export default data;
+
+export class DescriptionData {
+  fullNames: string[] = [];
+  nameToFullName: { [key: string]: string } = {
+    Siege: "Mighty Kat-A-Pult",
+    Ice: "Ice Cat",
+    Issun: "Issun Boshi",
+    "Prof Abyss": "Doktor Heaven",
+    Shishilan: "Togeluga",
+    Ushi: "Ushiwakamaru",
+    Emperor: "Emperor Cat",
+    Akuma: "Akuma",
+    Dartanyan: "D'artanyan",
+    Sirius: "Goddess of Light Sirius",
+  };
+
+  parse(): DescriptionData {
+    const names = [];
+
+    for (const index in data) {
+      const item = data[index];
+      if (parseInt(index) % 2 == 0) {
+        names.push(item.replaceAll("’", "'").split(" - ")[0]);
+      } else {
+        const [, realName] = item.match(new RegExp(".*/(.*)_\\(.*?\\)"));
+        this.fullNames.push(
+          decodeURI(realName.replaceAll("_", " ")).replaceAll("’", "'"),
+        );
+      }
+    }
+
+    for (const index in names) {
+      this.nameToFullName[names[index]] = this.fullNames[index];
+      this.nameToFullName[this.fullNames[index]] = this.fullNames[index];
+    }
+
+    return this;
+  }
+}
