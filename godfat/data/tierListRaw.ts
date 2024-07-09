@@ -34,9 +34,6 @@ export const tierListRaw: string[] = [
   "Fest-D - Dark Izu, Izu",
   "Fest-E - Dark Mitama, Garu",
   "Fest-F - Dark Garu",
-
-  // NOTE: PATCH
-  "E - Envanz",
 ];
 
 export default tierListRaw;

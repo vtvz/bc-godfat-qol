@@ -2,7 +2,7 @@
 // @name        Battle Cats Tier
 // @description Battle Cats bc.godfat.org tier list injector
 // @namespace   https://github.com/vtvz/bc-tiers
-// @version     2.0
+// @version     2.2
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/godfat.js
@@ -93,64 +93,77 @@ class HtmlInjector {
         const elms = document.querySelectorAll(".cat a:first-child, .found_cats a:first-child, .cats label span");
         const missed = new Set();
         for (const el of elms) {
-            const unitName = el.textContent + "";
-            const tiers = this.tierList.asArray(unitName);
+            const unitName = el.textContent;
+            const tiers = this.renderTiers(unitName);
             if (tiers) {
-                const htmlTiers = tiers
-                    .map((tier) => this.tierLabels.findByTier(tier))
-                    .map(({ tier, label }) => `<span title="${label}">[${tier}]</span>`);
-                el.innerHTML += `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
+                el.innerHTML += tiers;
             }
             else {
                 missed.add(unitName);
             }
-            const unitBanners = this.unitToBanners.asArray(unitName);
             const elParent = el.parentElement;
+            const unitBanners = this.renderBanners(unitName);
             if (unitBanners) {
-                elParent.innerHTML +=
-                    '<div class="vtvz-banners">' +
-                        unitBanners
-                            .map((banner) => `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`)
-                            .join(" | ") +
-                        "</div>";
+                elParent.innerHTML += unitBanners;
             }
             if (elParent.classList.contains("cat")) {
                 elParent.classList.add("vtvz-" + this.unitsRarity.getRarity(unitName));
             }
         }
         console.log("missed", missed);
+        this.injectStyle();
+    }
+    renderTiers(unitName) {
+        const tiers = this.tierList.asArray(unitName);
+        if (!tiers) {
+            return;
+        }
+        const htmlTiers = tiers
+            .map((tier) => this.tierLabels.findByTier(tier))
+            .map(({ tier, label }) => `<span title="${label}">[${tier}]</span>`);
+        return `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
+    }
+    renderBanners(unitName) {
+        const unitBanners = this.unitToBanners.asArray(unitName);
+        if (!unitBanners) {
+            return;
+        }
+        const links = unitBanners.map((banner) => `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`);
+        return '<div class="vtvz-banners">' + links.join(" | ") + "</div>";
+    }
+    injectStyle() {
         var style = document.createElement("style");
         const styleText = `
-    .vtvz-banners {
-      max-width: 350px;
-      font-size: 14px;
-    }
+      .vtvz-banners {
+        max-width: 350px;
+        font-size: 14px;
+      }
 
-    .vtvz-legend:not(.legend) {
-      border-top: 20px solid darkviolet;
-    }
+      .vtvz-legend:not(.legend) {
+        border-top: 20px solid darkviolet;
+      }
 
-    .vtvz-uber:not(.uber):not(.uber_fest){
-      border-top: 20px solid red;
-    }
+      .vtvz-uber:not(.uber) {
+        border-top: 20px solid red;
+      }
 
-    .vtvz-super:not(.supa):not(.supa_fest) {
-      border-top: 20px solid gold;
-    }
+      .vtvz-super:not(.supa) {
+        border-top: 20px solid gold;
+      }
 
-    .vtvz-rare {
-    }
+      .vtvz-rare {
+      }
 
-    .vtvz-special {
-    }
+      .vtvz-special {
+      }
 
-    .vtvz-normal {
-    }
+      .vtvz-normal {
+      }
 
-    .owned {
-      background-color: #34aeae !important;
-    }
-  `;
+      .owned {
+        background-color: #34aeae !important;
+      }
+    `;
         style.appendChild(document.createTextNode(styleText));
         document.getElementsByTagName("head")[0].appendChild(style);
     }
@@ -2213,8 +2226,6 @@ exports.tierListRaw = [
     "Fest-D - Dark Izu, Izu",
     "Fest-E - Dark Mitama, Garu",
     "Fest-F - Dark Garu",
-    // NOTE: PATCH
-    "E - Envanz",
 ];
 exports.default = exports.tierListRaw;
 
