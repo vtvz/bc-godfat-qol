@@ -102,7 +102,7 @@ class HtmlInjector {
                 missed.add(unitName);
             }
             const elParent = el.parentElement;
-            const unitBanners = this.renderBanners(unitName);
+            const unitBanners = this.renderBanners(unitName, !!el.closest(".found_cats"));
             if (unitBanners) {
                 elParent.innerHTML += unitBanners;
             }
@@ -123,13 +123,14 @@ class HtmlInjector {
             .map(({ tier, label }) => `<span title="${label}">[${tier}]</span>`);
         return `<sup><b>${htmlTiers.join(" ")}</b></sup>`;
     }
-    renderBanners(unitName) {
+    renderBanners(unitName, isInline) {
         const unitBanners = this.unitToBanners.asArray(unitName);
         if (!unitBanners) {
             return;
         }
         const links = unitBanners.map((banner) => `<a href="${banner.link}">${banner.title.replace("/Gacha Drop", "").replace(/Collaboration Event.*/, "")}</a>`);
-        return '<div class="vtvz-banners">' + links.join(" | ") + "</div>";
+        const el = isInline ? "span" : "div";
+        return `<${el} class="vtvz-banners">${links.join(" | ")}</${el}>`;
     }
     injectStyle() {
         var style = document.createElement("style");
