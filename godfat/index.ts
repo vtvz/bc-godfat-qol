@@ -1,5 +1,6 @@
 import { DescriptionData, banners, npChart, tierListRaw } from "./data";
-import { TierList } from "./data/tierListRaw";
+import { UnitToBanners } from "./data/banners";
+import TierList from "./TierList";
 
 const descriptionData = new DescriptionData().parse();
 
@@ -15,7 +16,7 @@ tierLabels.set(
 tierLabels.set(/-UT$/, "Tier with Ultra Talents consideration");
 tierLabels.set(/-UF$/, "Tier with Ultra Form consideration");
 
-const tierList = new TierList(descriptionData).parse();
+const tierList = new TierList(descriptionData).parse(tierListRaw);
 
 for (const npKey in npChart) {
   tierLabels.set("NP-" + npKey.toUpperCase(), npChart[npKey].label);
@@ -25,28 +26,7 @@ for (const npKey in npChart) {
   }
 }
 
-const unitToBanners: any = {};
-
-unitToBanners.addItem = (key, value) => {
-  if (!unitToBanners[key]) {
-    unitToBanners[key] = new Set();
-  }
-  unitToBanners[key].add(value);
-};
-
-unitToBanners.asArray = (key) => {
-  const val = unitToBanners[key];
-  if (!val) {
-    return;
-  }
-  return [...val];
-};
-
-for (const banner of banners) {
-  for (const fullName of banner.units) {
-    unitToBanners.addItem(fullName, banner);
-  }
-}
+const unitToBanners = new UnitToBanners().parse();
 
 console.log("tierList", tierList);
 

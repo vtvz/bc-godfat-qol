@@ -1,4 +1,4 @@
-export default [
+const banners = [
   {
     title: "Dynasty Fest",
     link: "https://battle-cats.fandom.com/wiki/Dynasty_Fest_(Gacha_Event)",
@@ -897,3 +897,34 @@ export default [
     units: ["High School Kingpin Riki", "Kunio-kun"],
   },
 ];
+
+export default banners;
+
+export class UnitToBanners {
+  unitToBanners: Map<string, Set<any>> = new Map();
+
+  addItem(key: string, value: any) {
+    if (!this.unitToBanners[key]) {
+      this.unitToBanners[key] = new Set();
+    }
+    this.unitToBanners[key].add(value);
+  }
+
+  asArray(key: string): any[] {
+    const val = this.unitToBanners[key];
+    if (!val) {
+      return;
+    }
+
+    return [...val];
+  }
+
+  parse(): UnitToBanners {
+    for (const banner of banners) {
+      for (const fullName of banner.units) {
+        this.addItem(fullName, banner);
+      }
+    }
+    return this;
+  }
+}
