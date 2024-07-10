@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node build.js",
-    "postbuild": "cat godfat/header.txt tmp/godfat.js > dist/godfat.js"
+    "postbuild": "cat godfat/header.txt tmp/godfat.js > dist/godfat.user.js"
   },
   "repository": "git@gist.github.com:c76e08303e078df861ddab5b5621e924.git",
   "author": "Vitaly <vtvz.ru@gmail.com>",
