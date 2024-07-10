@@ -5,8 +5,8 @@
 // @namespace   https://github.com/vtvz/bc-tiers
 // @author      vtvz
 // @match       https://battle-cats.fandom.com/wiki/*
-// @updateURL   https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/wiki.js
-// @downloadURL https://raw.githubusercontent.com/vtvz/bc-tiers/master/dist/wiki.js
+// @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/wiki.user.js
+// @downloadURL https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/wiki.user.js
 // ==/UserScript==
 const title = document.querySelector("h1");
 
