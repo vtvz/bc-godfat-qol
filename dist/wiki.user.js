@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name        Battle Cats Unit Copy
-// @description Battle Cats copy all units from page
+// @name        Battle Cats Wiki Copy
+// @description Copy data about units from banner's wiki pages
 // @version     1.0
-// @namespace   https://github.com/vtvz/bc-tiers
+// @namespace   https://github.com/vtvz/bc-godfat-qol
 // @author      vtvz
 // @match       https://battle-cats.fandom.com/wiki/*
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/wiki.user.js

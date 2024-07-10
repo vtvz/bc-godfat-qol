@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name        Battle Cats Tier
-// @description Battle Cats bc.godfat.org tier list injector
-// @namespace   https://github.com/vtvz/bc-tiers
-// @version     2.4.0
+// @name        Battle Cats GodFat QoL Tools
+// @description Injects a lot of useful information to bc.godfat.org seed tracker
+// @namespace   https://github.com/vtvz/bc-godfat-qol
+// @version     2.4.1
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
