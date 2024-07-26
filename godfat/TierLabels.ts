@@ -10,8 +10,9 @@ export default class TierLabels {
     );
     this.labels.set(
       /^Fest-/,
-      "Uberfest and Epicfest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others",
+      "Uberfest and Epicfest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others. Number means priority within Fest's banners",
     );
+    this.labels.set(/^L-/, "Numeric priorities of legend rares");
     this.labels.set(/-UT$/, "Tier with Ultra Talents consideration");
     this.labels.set(/-UF$/, "Tier with Ultra Form consideration");
   }

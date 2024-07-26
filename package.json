@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "node build.js",
-    "postbuild": "cat godfat/header.txt tmp/godfat.js > dist/godfat.user.js"
+    "build": "node scripts/build.js",
+    "copy": "cat dist/godfat.user.js | xclip -selection clipboard",
+    "build-copy": "yarn run build && yarn run copy"
   },
   "repository": "git@gist.github.com:c76e08303e078df861ddab5b5621e924.git",
   "author": "Vitaly <vtvz.ru@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "browserify": "^17.0.0",
-    "browserify-header": "^1.1.0",
     "tsify": "^5.0.4",
     "typescript": "^5.5.2"
+  },
+  "devDependencies": {
+    "@types/browserify": "^12.0.40"
   }
 }
