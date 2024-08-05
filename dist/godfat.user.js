@@ -2,7 +2,7 @@
 // @name        Battle Cats GodFat QoL Tools
 // @description Injects a lot of useful information to bc.godfat.org seed tracker
 // @namespace   https://github.com/vtvz/bc-godfat-qol
-// @version     2.6.0
+// @version     2.7.0
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
@@ -192,6 +192,13 @@ class TierLabels {
         this.labels.set(/^L-/, "Numeric priorities of legend rares. Less is better");
         this.labels.set(/-UT$/, "Tier with Ultra Talents consideration");
         this.labels.set(/-UF$/, "Tier with Ultra Form consideration");
+        this.labels.set(/^S$/, "Extremely overpowered units who excel in their niche and general end game performance. Ubers that typically land around top 30 are placed here");
+        this.labels.set(/^A$/, "Insanely powerful units who only suffer from minor blemishes. Shines above lower tiers either through surpassing generalist expectations or being particularly powerful at their niche");
+        this.labels.set(/^B$/, "Very strong units who are often used as powerful specialists");
+        this.labels.set(/^C$/, "Average units who are sufficient for their usage and offer a well balanced kit");
+        this.labels.set(/^D$/, "Slightly below average units who may struggle in a few of their designated departments. Typically have niche overlaps with a non uber unit or have generic roles");
+        this.labels.set(/^E$/, "Bad units who do not offer value through their niche, usually being outclassed by a handful of non uber options both in niche and generalist aspects. Only spared from F due to very small and situational scenarios");
+        this.labels.set(/^F$/, "Garbage units who have little to no use. Either completely outdone by non uber units or serve zero purpose to exist");
     }
     npChart(npChart) {
         for (const npKey in npChart) {
