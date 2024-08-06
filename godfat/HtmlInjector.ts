@@ -42,6 +42,7 @@ export default class HtmlInjector {
 	      <summary>Here is "documentation" of tags</summary>
         <ul>
           <li>${tierDesc}</li>
+          <li>Sell all <b>duplicate</b> Ubers, Legend rares and all Nenekos for NP</li>
         </ul>
       </details>
 

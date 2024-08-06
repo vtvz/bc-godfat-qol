@@ -2,7 +2,7 @@
 // @name        Battle Cats GodFat QoL Tools
 // @description Injects a lot of useful information to bc.godfat.org seed tracker
 // @namespace   https://github.com/vtvz/bc-godfat-qol
-// @version     2.8.1
+// @version     2.8.2
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
@@ -108,6 +108,7 @@ class HtmlInjector {
 	      <summary>Here is "documentation" of tags</summary>
         <ul>
           <li>${tierDesc}</li>
+          <li>Sell all <b>duplicate</b> Ubers, Legend rares and all Nenekos for NP</li>
         </ul>
       </details>
 
