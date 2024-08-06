@@ -10,17 +10,23 @@ const tmpFile = path.join(rootDir, "tmp", "godfat.js");
 const headerFile = path.join(rootDir, "godfat", "header.txt");
 const resultFile = path.join(rootDir, "dist", "godfat.user.js");
 
-browserify()
+const tmpFileStream = fs.createWriteStream(tmpFile);
+
+const bundle = browserify()
   .add(indexFile)
   .plugin(tsify, { noImplicitAny: false })
-  .bundle()
-  .on("error", function(error) {
-    console.error(error.toString());
-  })
-  .pipe(fs.createWriteStream(tmpFile));
+  .bundle();
 
-const headerData = fs.readFileSync(headerFile, "utf8");
-const scriptData = fs.readFileSync(tmpFile, "utf8");
-const resultData = headerData + scriptData;
+bundle.pipe(tmpFileStream);
 
-fs.writeFileSync(resultFile, resultData, "utf8");
+bundle.on("error", function(error) {
+  console.error(error.toString());
+});
+
+tmpFileStream.on("finish", function() {
+  const headerData = fs.readFileSync(headerFile, "utf8");
+  const scriptData = fs.readFileSync(tmpFile, "utf8");
+  const resultData = headerData + scriptData;
+
+  fs.writeFileSync(resultFile, resultData, "utf8");
+});

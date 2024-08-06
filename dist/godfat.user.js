@@ -2,7 +2,7 @@
 // @name        Battle Cats GodFat QoL Tools
 // @description Injects a lot of useful information to bc.godfat.org seed tracker
 // @namespace   https://github.com/vtvz/bc-godfat-qol
-// @version     2.7.0
+// @version     2.8.0
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
@@ -89,7 +89,48 @@ class HtmlInjector {
         this.tierLabels = tierLabels;
         this.unitsRarity = unitsRarity;
     }
+    renderBigBanner() {
+        const notice = document.querySelector("#notice");
+        if (!notice) {
+            return;
+        }
+        const banner = document.createElement("div");
+        const tierDesc = Array.from(this.tierLabels.labels)
+            .map(([_, [tier, desc]]) => `<b><sup>[${tier}]</sup></b> ${desc}`)
+            .join("</li><li>");
+        banner.id = "vtvz-big-banner";
+        banner.innerHTML = `
+      <p>
+        You're using <a href="https://github.com/vtvz/bc-godfat-qol/">Battle Cats GodFat QoL Tools</a> created by <a href="https://github.com/vtvz">vtvz</a>
+      </p>
+
+      <details>
+	      <summary>Here is "documentation" of tags</summary>
+        <ul>
+          <li>${tierDesc}</li>
+        </ul>
+      </details>
+
+      <details>
+	      <summary>Sources</summary>
+        <ul>
+          <li><a href="https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I">Tier Lists</a></li>
+          <li><a href="https://imgur.com/a/np-charts-9rAfl93">NP Charts</a></li>
+        </ul>
+      </details>
+
+      <details>
+	      <summary>Credits</summary>
+        <ul>
+          <li><a href="https://www.reddit.com/user/XskullBC/">XskullBC</a> for NP Charts and Tier lists</li>
+          <li><a href="https://github.com/vtvz">vtvz</a> for code</li>
+        </ul>
+      </details>
+    `;
+        notice.insertAdjacentElement("afterend", banner);
+    }
     inject() {
+        this.renderBigBanner();
         const elms = document.querySelectorAll(".cat a:first-child, .found_cats a:first-child, .cats label span");
         const missed = new Set();
         for (const el of elms) {
@@ -172,6 +213,20 @@ class HtmlInjector {
 
       .vtvz-normal {
       }
+
+      #vtvz-big-banner {
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      #vtvz-big-banner ul {
+        margin-bottom: 0;
+      }
+
+      #vtvz-big-banner summary {
+        cursor: pointer;
+      }
     `;
         style.appendChild(document.createTextNode(styleText));
         document.getElementsByTagName("head")[0].appendChild(style);
@@ -185,31 +240,67 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class TierLabels {
     constructor() {
         this.labels = new Map();
-        this.labels.set(/^TOP-/, "The best ubers. Spend everything you have to get them");
-        this.labels.set(/^Fest-[A-Z]+/, "Fest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others. Number means priority within Fest's banners");
-        this.labels.set(/^Fest-[0-9]+/, "Fest numeric priority. Less is better");
-        this.labels.set(/^Ban-[0-9]+/, "Priority within banner");
-        this.labels.set(/^L-/, "Numeric priorities of legend rares. Less is better");
-        this.labels.set(/-UT$/, "Tier with Ultra Talents consideration");
-        this.labels.set(/-UF$/, "Tier with Ultra Form consideration");
-        this.labels.set(/^S$/, "Extremely overpowered units who excel in their niche and general end game performance. Ubers that typically land around top 30 are placed here");
-        this.labels.set(/^A$/, "Insanely powerful units who only suffer from minor blemishes. Shines above lower tiers either through surpassing generalist expectations or being particularly powerful at their niche");
-        this.labels.set(/^B$/, "Very strong units who are often used as powerful specialists");
-        this.labels.set(/^C$/, "Average units who are sufficient for their usage and offer a well balanced kit");
-        this.labels.set(/^D$/, "Slightly below average units who may struggle in a few of their designated departments. Typically have niche overlaps with a non uber unit or have generic roles");
-        this.labels.set(/^E$/, "Bad units who do not offer value through their niche, usually being outclassed by a handful of non uber options both in niche and generalist aspects. Only spared from F due to very small and situational scenarios");
-        this.labels.set(/^F$/, "Garbage units who have little to no use. Either completely outdone by non uber units or serve zero purpose to exist");
+        this.labels.set(/^TOP-/, [
+            "TOP-1",
+            "The best ubers. Spend everything you have to get them",
+        ]);
+        this.labels.set(/^Fest-[A-Z]+/, [
+            "Fest-S",
+            "Fest units. Very good and very rare. Should be prioritized. Fest's 'F' tier is 'A' for others",
+        ]);
+        this.labels.set(/^Fest-[0-9]+/, [
+            "Fest-1",
+            "Fest numeric priority. Less is better",
+        ]);
+        this.labels.set(/^Ban-[0-9]+/, ["Ban-1", "Priority within main banner"]);
+        this.labels.set(/^L-/, [
+            "L-1",
+            "Numeric priorities of legend rares. Less is better",
+        ]);
+        this.labels.set(/-UT$/, ["S-UT", "Tier with Ultra Talents consideration"]);
+        this.labels.set(/-UF$/, ["S-UF", "Tier with Ultra Form consideration"]);
+        this.labels.set(/^S$/, [
+            "S",
+            "Extremely overpowered units who excel in their niche and general end game performance. Ubers that typically land around top 30 are placed here",
+        ]);
+        this.labels.set(/^A$/, [
+            "A",
+            "Insanely powerful units who only suffer from minor blemishes. Shines above lower tiers either through surpassing generalist expectations or being particularly powerful at their niche",
+        ]);
+        this.labels.set(/^B$/, [
+            "B",
+            "Very strong units who are often used as powerful specialists",
+        ]);
+        this.labels.set(/^C$/, [
+            "C",
+            "Average units who are sufficient for their usage and offer a well balanced kit",
+        ]);
+        this.labels.set(/^D$/, [
+            "D",
+            "Slightly below average units who may struggle in a few of their designated departments. Typically have niche overlaps with a non uber unit or have generic roles",
+        ]);
+        this.labels.set(/^E$/, [
+            "E",
+            "Bad units who do not offer value through their niche, usually being outclassed by a handful of non uber options both in niche and generalist aspects. Only spared from F due to very small and situational scenarios",
+        ]);
+        this.labels.set(/^F$/, [
+            "F",
+            "Garbage units who have little to no use. Either completely outdone by non uber units or serve zero purpose to exist",
+        ]);
     }
     npChart(npChart) {
         for (const npKey in npChart) {
-            this.labels.set("NP-" + npKey.toUpperCase(), npChart[npKey].label);
+            this.labels.set("NP-" + npKey.toUpperCase(), [
+                "NP-" + npKey.toUpperCase(),
+                npChart[npKey].label,
+            ]);
         }
         return this;
     }
     findByTier(tier) {
         for (const [key, label] of this.labels.entries()) {
             if (tier.match(key)) {
-                return { tier, label };
+                return { tier, label: label[1] };
             }
         }
         return { tier, label: "" };
@@ -1586,6 +1677,15 @@ exports.tierListRaw = void 0;
 // based on https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I
 exports.tierListRaw = [
     [
+        "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
+        "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Dioramos (UT), Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri",
+        "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Gamereon, Cosmo, Kaguya (UF), Issun, Shitakiri, Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
+        "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gundros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
+        "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
+        "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Blizana, Verbena, Nekoluga, Kaoluga",
+        "F - Oda, Myrcia, Envanz, Nobiluga, Papaluga",
+    ],
+    [
         "TOP-1 - Dark Kasli",
         "TOP-2 - Phono",
         "TOP-3 - Balrog",
@@ -1596,15 +1696,6 @@ exports.tierListRaw = [
         "TOP-8 - Yukimura",
         "TOP-9 - Chronos",
         "TOP-10 - Sirius",
-    ],
-    [
-        "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
-        "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Dioramos (UT), Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri",
-        "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Gamereon, Cosmo, Kaguya (UF), Issun, Shitakiri, Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
-        "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gundros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
-        "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
-        "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Blizana, Verbena, Nekoluga, Kaoluga",
-        "F - Oda, Myrcia, Envanz, Nobiluga, Papaluga",
     ],
     [
         "S - Izanagi",
@@ -1654,20 +1745,49 @@ exports.tierListRaw = [
         "Fest-15 - Dark Mitama",
         "Fest-16 - Dark Garu",
     ],
+    // 1. Almighties (A, 6.18)
     [
-        "Ban-1 - Yukimura",
-        "Ban-2 - Keiji",
-        "Ban-3 - Shingen",
-        "Ban-4 - Akechi",
-        "Ban-5 - Kenshin",
-        "Ban-6 - Amakusa",
-        "Ban-7 - Hanzo",
-        "Ban-8 - Musashi",
-        "Ban-9 - Yoshimoto",
-        "Ban-10 - Oda",
-        "Ban-11 - Masamune",
-        "Ban-12 - Kaihime",
+        "Ban-1 - Chronos",
+        "Ban-2 - Poseidon",
+        "Ban-3 - Anubis",
+        "Ban-4 - Amaterasu",
+        "Ban-5 - Ganesha",
+        "Ban-6 - Aphrodite",
+        "Ban-7 - Lucifer",
+        "Ban-8 - Hades",
+        "Ban-9 - Gaia",
+        "Ban-10 - Aset",
+        "Ban-11 - Zeus",
     ],
+    // 2. Dark Heroes (A, 5.81)
+    [
+        "Ban-1 - Akira",
+        "Ban-2 - Saki",
+        "Ban-3 - Vigler",
+        "Ban-4 - Thunder Jack",
+        "Ban-5 - Klay",
+        "Ban-6 - Catman",
+        "Ban-7 - Hayabusa",
+        "Ban-8 - Heaven",
+        "Ban-9 - Mekako",
+        "Ban-10 - Cyclops",
+        "Ban-11 - White Rabbit",
+    ],
+    // 3. Ultra Souls (B, 5.36)
+    [
+        "Ban-1 - Kasa Jizo",
+        "Ban-2 - Ushiwakamaru",
+        "Ban-3 - Sarukani",
+        "Ban-4 - Kintaro",
+        "Ban-5 - Momotaro",
+        "Ban-6 - Gamereon",
+        "Ban-7 - Cosmo",
+        "Ban-8 - Kaguya",
+        "Ban-9 - Issun",
+        "Ban-10 - Shitakiri",
+        "Ban-11 - Kachi Kachi",
+    ],
+    // 4. Galaxy Gals (B, 5.25)
     [
         "Ban-1 - Kuu",
         "Ban-2 - Windy",
@@ -1682,6 +1802,61 @@ exports.tierListRaw = [
         "Ban-11 - Pegasa",
         "Ban-12 - Myrcia",
     ],
+    // 5. Dynamites (B, 5.18)
+    [
+        "Ban-1 - Balrog",
+        "Ban-2 - Lasvoss",
+        "Ban-3 - Baby Cat",
+        "Ban-4 - Ice Cat",
+        "Ban-5 - Satoru",
+        "Ban-6 - Momoco",
+        "Ban-7 - Cat Machine",
+        "Ban-8 - Paladin",
+        "Ban-9 - Tengu",
+        "Ban-10 - Nurse",
+        "Ban-11 - Cat Clan Heroes",
+    ],
+    // 6. Wargods (B, 4.91)
+    [
+        "Ban-1 - Yukimura",
+        "Ban-2 - Keiji",
+        "Ban-3 - Shingen",
+        "Ban-4 - Akechi",
+        "Ban-5 - Kenshin",
+        "Ban-6 - Amakusa",
+        "Ban-7 - Hanzo",
+        "Ban-8 - Musashi",
+        "Ban-9 - Yoshimoto",
+        "Ban-10 - Oda",
+        "Ban-11 - Masamune",
+        "Ban-12 - Kaihime",
+    ],
+    // 7. Iron Legions (B, 4.8)
+    [
+        "Ban-1 - Siege Engine",
+        "Ban-2 - Deth Troy",
+        "Ban-3 - Aethur",
+        "Ban-4 - Thermae",
+        "Ban-5 - Muu",
+        "Ban-6 - Drednot",
+        "Ban-7 - Rekon Korps",
+        "Ban-8 - Bomburr",
+        "Ban-9 - Sphinx Korps",
+        "Ban-10 - Envanz",
+    ],
+    // 8. MonGals (B, 4.55)
+    [
+        "Ban-1 - Nanaho",
+        "Ban-2 - Kanna",
+        "Ban-3 - Himeyuri",
+        "Ban-4 - Ruri",
+        "Ban-5 - Reika",
+        "Ban-6 - Vega",
+        "Ban-7 - Deale",
+        "Ban-8 - Tomoe",
+        "Ban-9 - Verbena",
+    ],
+    // 9. Dragon Emperors (C, 4.17)
     [
         "Ban-1 - Daliasan",
         "Ban-2 - Dioramos",
@@ -1696,57 +1871,7 @@ exports.tierListRaw = [
         "Ban-11 - Babel",
         "Ban-12 - Sodom",
     ],
-    [
-        "Ban-1 - Kasa Jizo",
-        "Ban-2 - Ushiwakamaru",
-        "Ban-3 - Sarukani",
-        "Ban-4 - Kintaro",
-        "Ban-5 - Momotaro",
-        "Ban-6 - Gamereon",
-        "Ban-7 - Cosmo",
-        "Ban-8 - Kaguya",
-        "Ban-9 - Issun",
-        "Ban-10 - Shitakiri",
-        "Ban-11 - Kachi Kachi",
-    ],
-    [
-        "Ban-1 - Akira",
-        "Ban-2 - Saki",
-        "Ban-3 - Vigler",
-        "Ban-4 - Thunder Jack",
-        "Ban-5 - Klay",
-        "Ban-6 - Catman",
-        "Ban-7 - Hayabusa",
-        "Ban-8 - Heaven",
-        "Ban-9 - Mekako",
-        "Ban-10 - Cyclops",
-        "Ban-11 - White Rabbit",
-    ],
-    [
-        "Ban-1 - Chronos",
-        "Ban-2 - Poseidon",
-        "Ban-3 - Anubis",
-        "Ban-4 - Amaterasu",
-        "Ban-5 - Ganesha",
-        "Ban-6 - Aphrodite",
-        "Ban-7 - Lucifer",
-        "Ban-8 - Hades",
-        "Ban-9 - Gaia",
-        "Ban-10 - Aset",
-        "Ban-11 - Zeus",
-    ],
-    [
-        "Ban-1 - Siege Engine",
-        "Ban-2 - Deth Troy",
-        "Ban-3 - Aethur",
-        "Ban-4 - Thermae",
-        "Ban-5 - Muu",
-        "Ban-6 - Drednot",
-        "Ban-7 - Rekon Korps",
-        "Ban-8 - Bomburr",
-        "Ban-9 - Sphinx Korps",
-        "Ban-10 - Envanz",
-    ],
+    // 10. Elemental Pixies (C, 4.11)
     [
         "Ban-1 - Lumina",
         "Ban-2 - Bora",
@@ -1758,17 +1883,7 @@ exports.tierListRaw = [
         "Ban-8 - Tetsukachi",
         "Ban-9 - Blizana",
     ],
-    [
-        "Ban-1 - Nanaho",
-        "Ban-2 - Kanna",
-        "Ban-3 - Himeyuri",
-        "Ban-4 - Ruri",
-        "Ban-5 - Reika",
-        "Ban-6 - Vega",
-        "Ban-7 - Deale",
-        "Ban-8 - Tomoe",
-        "Ban-9 - Verbena",
-    ],
+    // 11. Nekolugas (C, 3.54)
     [
         "Ban-1 - Tecoluga",
         "Ban-2 - Balaluga",

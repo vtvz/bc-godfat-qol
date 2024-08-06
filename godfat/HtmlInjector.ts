@@ -21,7 +21,53 @@ export default class HtmlInjector {
     this.unitsRarity = unitsRarity;
   }
 
+  renderBigBanner() {
+    const notice = document.querySelector("#notice");
+    if (!notice) {
+      return;
+    }
+
+    const banner = document.createElement("div");
+    const tierDesc = Array.from(this.tierLabels.labels)
+      .map(([_, [tier, desc]]) => `<b><sup>[${tier}]</sup></b> ${desc}`)
+      .join("</li><li>");
+
+    banner.id = "vtvz-big-banner";
+    banner.innerHTML = `
+      <p>
+        You're using <a href="https://github.com/vtvz/bc-godfat-qol/">Battle Cats GodFat QoL Tools</a> created by <a href="https://github.com/vtvz">vtvz</a>
+      </p>
+
+      <details>
+	      <summary>Here is "documentation" of tags</summary>
+        <ul>
+          <li>${tierDesc}</li>
+        </ul>
+      </details>
+
+      <details>
+	      <summary>Sources</summary>
+        <ul>
+          <li><a href="https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I">Tier Lists</a></li>
+          <li><a href="https://imgur.com/a/np-charts-9rAfl93">NP Charts</a></li>
+        </ul>
+      </details>
+
+      <details>
+	      <summary>Credits</summary>
+        <ul>
+          <li><a href="https://www.reddit.com/user/XskullBC/">XskullBC</a> for NP Charts and Tier lists</li>
+          <li><a href="https://github.com/vtvz">vtvz</a> for code</li>
+        </ul>
+      </details>
+    `;
+
+    notice.insertAdjacentElement("afterend", banner);
+  }
+
   inject() {
+    this.renderBigBanner();
+
     const elms = document.querySelectorAll(
       ".cat a:first-child, .found_cats a:first-child, .cats label span",
     );
@@ -128,6 +174,20 @@ export default class HtmlInjector {
       }
 
       .vtvz-normal {
+      }
+
+      #vtvz-big-banner {
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      #vtvz-big-banner ul {
+        margin-bottom: 0;
+      }
+
+      #vtvz-big-banner summary {
+        cursor: pointer;
       }
     `;
 
