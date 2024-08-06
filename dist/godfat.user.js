@@ -2,7 +2,7 @@
 // @name        Battle Cats GodFat QoL Tools
 // @description Injects a lot of useful information to bc.godfat.org seed tracker
 // @namespace   https://github.com/vtvz/bc-godfat-qol
-// @version     2.8.2
+// @version     2.8.3
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
@@ -90,7 +90,7 @@ class HtmlInjector {
         this.unitsRarity = unitsRarity;
     }
     renderBigBanner() {
-        const notice = document.querySelector("#notice");
+        const notice = document.querySelector(".information");
         if (!notice) {
             return;
         }
@@ -219,6 +219,8 @@ class HtmlInjector {
         border: 1px solid black;
         padding: 10px;
         margin-bottom: 10px;
+        max-width: 1000px;
+        display: inline-block;
       }
 
       #vtvz-big-banner ul {

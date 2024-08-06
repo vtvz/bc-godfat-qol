@@ -22,7 +22,7 @@ export default class HtmlInjector {
   }
 
   renderBigBanner() {
-    const notice = document.querySelector("#notice");
+    const notice = document.querySelector(".information");
     if (!notice) {
       return;
     }
@@ -181,6 +181,8 @@ export default class HtmlInjector {
         border: 1px solid black;
         padding: 10px;
         margin-bottom: 10px;
+        max-width: 1000px;
+        display: inline-block;
       }
 
       #vtvz-big-banner ul {
