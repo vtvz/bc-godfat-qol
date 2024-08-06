@@ -2,7 +2,7 @@
 // @name        Battle Cats GodFat QoL Tools
 // @description Injects a lot of useful information to bc.godfat.org seed tracker
 // @namespace   https://github.com/vtvz/bc-godfat-qol
-// @version     2.8.0
+// @version     2.8.1
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
@@ -1594,7 +1594,7 @@ Object.defineProperty(exports, "unitsRarityRaw", { enumerable: true, get: functi
 Object.defineProperty(exports, "__esModule", { value: true });
 const npChart = {
     sell: {
-        label: "Just sell them",
+        label: "Just sell them for NP",
         units: [
             "Witch Cat",
             "Fortune Teller Cat",
@@ -1627,11 +1627,11 @@ const npChart = {
         ],
     },
     maybe: {
-        label: "Decide youself",
+        label: "Decide youself to sell for NP or not",
         units: ["Fencer Cat", "Juliet Cat", "Viking Cat"],
     },
     "a-bit": {
-        label: "Use a bit",
+        label: "Use a bit then sell for NP",
         units: [
             "Sushi Cat",
             "Kotatsu Cat",
@@ -1646,7 +1646,7 @@ const npChart = {
         units: ["Swimmer Cat", "Vaulter Cat"],
     },
     halfed: {
-        label: "Use until halved / quartered",
+        label: "Use until halved / quartered then sell",
         units: [
             "Jurassic Cat",
             "Salon Cat",

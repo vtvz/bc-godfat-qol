@@ -10,7 +10,7 @@ export type NpChartItems = { [key: string]: NpChartItem };
 
 const npChart: NpChartItems = {
   sell: {
-    label: "Just sell them",
+    label: "Just sell them for NP",
     units: [
       "Witch Cat",
       "Fortune Teller Cat",
@@ -43,11 +43,11 @@ const npChart: NpChartItems = {
     ],
   },
   maybe: {
-    label: "Decide youself",
+    label: "Decide youself to sell for NP or not",
     units: ["Fencer Cat", "Juliet Cat", "Viking Cat"],
   },
   "a-bit": {
-    label: "Use a bit",
+    label: "Use a bit then sell for NP",
     units: [
       "Sushi Cat",
       "Kotatsu Cat",
@@ -62,7 +62,7 @@ const npChart: NpChartItems = {
     units: ["Swimmer Cat", "Vaulter Cat"],
   },
   halfed: {
-    label: "Use until halved / quartered",
+    label: "Use until halved / quartered then sell",
     units: [
       "Jurassic Cat",
       "Salon Cat",
