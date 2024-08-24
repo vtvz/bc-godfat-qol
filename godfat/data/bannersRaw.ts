@@ -893,6 +893,19 @@ const banners: Banner[] = [
       "MARS PEOPLE",
     ],
   },
+  {
+    title: "Rurouni Kenshin Collaboration Event/Gacha Drop",
+    link: "https://battle-cats.fandom.com/wiki/Rurouni_Kenshin_Collaboration_Event/Gacha_Drop",
+    units: [
+      "Kenshin Himura",
+      "Sanosuke Sagara",
+      "Aoshi Shinomori",
+      "Hajime Saito",
+      "// others",
+      "Li'l Kaoru",
+      "Li'l Yahiko",
+    ],
+  },
   // mannual
   //
   {

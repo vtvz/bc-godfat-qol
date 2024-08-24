@@ -2,7 +2,7 @@
 // @name        Battle Cats GodFat QoL Tools
 // @description Injects a lot of useful information to bc.godfat.org seed tracker
 // @namespace   https://github.com/vtvz/bc-godfat-qol
-// @version     2.8.3
+// @version     2.9.0
 // @match       https://bc.godfat.org/*
 // @author      vtvz
 // @updateURL   https://raw.githubusercontent.com/vtvz/bc-godfat-qol/master/dist/godfat.user.js
@@ -347,7 +347,8 @@ class TierList {
                 }
                 const fullName = this.descriptionData.nameToFullName[unitName];
                 if (!fullName) {
-                    console.log("don't have full name", unitName);
+                    console.log("don't have full name in desc", unitName);
+                    this.addItem(unitName, unitTier);
                     continue;
                 }
                 this.addItem(fullName, unitTier);
@@ -1284,6 +1285,19 @@ const banners = [
             "MARS PEOPLE",
         ],
     },
+    {
+        title: "Rurouni Kenshin Collaboration Event/Gacha Drop",
+        link: "https://battle-cats.fandom.com/wiki/Rurouni_Kenshin_Collaboration_Event/Gacha_Drop",
+        units: [
+            "Kenshin Himura",
+            "Sanosuke Sagara",
+            "Aoshi Shinomori",
+            "Hajime Saito",
+            "// others",
+            "Li'l Kaoru",
+            "Li'l Yahiko",
+        ],
+    },
     // mannual
     //
     {
@@ -1318,6 +1332,9 @@ const data = [
     "https://battle-cats.fandom.com/wiki/Summoner_Satoru_(Uber_Rare_Cat)",
     "Tengu - Fairly generic mid ranger that has a good amount of abilities from strong vs red/ angel, wave immune, and strengthen. Cheap and an overall solid option to combat red and angel, notably useful for being a direct counter to Exiel and viability in Baron Seal due to his colossus slayer and wave immunity.",
     "https://battle-cats.fandom.com/wiki/Cat_Tengu_(Uber_Rare_Cat)",
+    "Dinosaur - A strong specialist sniper who deals extremely high piercing DPS against Angels. Has an all round well built kit with good HP, good KB count, and good cooldown. However, he struggles in having an unsafe standing range which considerably lowers general usage and can’t reliably counter higher ranged Angels without the help of peons or a stepping stone. Offers good control from his multi hit + LD attack with a summoner that synergizes well with his sniper kit but can interfere with his short cooldown.",
+    // NOTE: PATCH added link as a new line
+    "https://battle-cats.fandom.com/wiki/Dinosaur_(Uber_Rare_Cat)",
     "Momoco - Has wide wave attacks with high DPS and strong freeze procs against red, black, and angel, especially with the field wide wave attacks. Can deal good chip damage overtime with the wave, especially if a stepping stone is present. Struggles with survivability and has multi hits which can potentially make her miss attacks.",
     "https://battle-cats.fandom.com/wiki/Wonder_MOMOCO_(Legend_Rare_Cat)",
     "Yukimura - One of the best kamikaze rushers in the game. At max level, he exceeds the power of Awakened Bahamut when completely maxed in damage, HP, speed, cost, and cooldown. Extremely high mobility and safe uber that yields high reward. Also carries massive damage to blacks to completely decimate a trait, being best used as a unit that can take out a specific black enemy on the field or rebound constantly to handle a larger crowd. Only struggles against stages that may ward off kamikaze units, though that is rare to find due to Yukimura’s build and how speed can infiltrate most enemies.",
@@ -1673,19 +1690,20 @@ exports.default = npChart;
 // Wram and join with Fest prefix
 // ^v$hS"A,_A^aFest-j
 // Numeric
-// s/\(\d*\)\. \(.*\)/"Fest-\1 - \2",
+// :s/\(\d*\)\. \(.*\)/"Ban-\1 - \2",
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tierListRaw = void 0;
-// update 7/17/24
+// update 8/20/24
 // based on https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I
+// update doc https://docs.google.com/document/d/183G17wJFQL8Ur3AjXEPWZiuhTJBbPwKY7G54pb4htig
 exports.tierListRaw = [
     [
-        "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
+        "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Ganesha (UT), Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
         "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Dioramos (UT), Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri",
-        "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Gamereon, Cosmo, Kaguya (UF), Issun, Shitakiri, Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
-        "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gundros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
-        "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
-        "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Blizana, Verbena, Nekoluga, Kaoluga",
+        "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Issun, Gamereon, Cosmo, Shitakiri, Kaguya (UF), Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
+        "C - Dinosaur, Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gunduros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
+        "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Blizana, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
+        "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Verbena, Nekoluga, Kaoluga",
         "F - Oda, Myrcia, Envanz, Nobiluga, Papaluga",
     ],
     [
@@ -1748,13 +1766,20 @@ exports.tierListRaw = [
         "Fest-15 - Dark Mitama",
         "Fest-16 - Dark Garu",
     ],
+    // https://www.youtube.com/watch?v=5s6rc1T3Y58&t=820s
+    [
+        "A - Kenshin Himura",
+        "C - Sanosuke Sagara",
+        "C - Aoshi Shinomori",
+        "S - Hajime Saito",
+    ],
     // 1. Almighties (A, 6.18)
     [
         "Ban-1 - Chronos",
         "Ban-2 - Poseidon",
-        "Ban-3 - Anubis",
-        "Ban-4 - Amaterasu",
-        "Ban-5 - Ganesha",
+        "Ban-3 - Ganesha",
+        "Ban-4 - Anubis",
+        "Ban-5 - Amaterasu",
         "Ban-6 - Aphrodite",
         "Ban-7 - Lucifer",
         "Ban-8 - Hades",
@@ -1783,11 +1808,11 @@ exports.tierListRaw = [
         "Ban-3 - Sarukani",
         "Ban-4 - Kintaro",
         "Ban-5 - Momotaro",
-        "Ban-6 - Gamereon",
-        "Ban-7 - Cosmo",
-        "Ban-8 - Kaguya",
-        "Ban-9 - Issun",
-        "Ban-10 - Shitakiri",
+        "Ban-6 - Issun",
+        "Ban-7 - Gamereon",
+        "Ban-8 - Cosmo",
+        "Ban-9 - Shitakiri",
+        "Ban-10 - Kaguya",
         "Ban-11 - Kachi Kachi",
     ],
     // 4. Galaxy Gals (B, 5.25)
@@ -1814,22 +1839,11 @@ exports.tierListRaw = [
         "Ban-5 - Satoru",
         "Ban-6 - Momoco",
         "Ban-7 - Cat Machine",
-        "Ban-8 - Paladin",
-        "Ban-9 - Tengu",
-        "Ban-10 - Nurse",
-        "Ban-11 - Cat Clan Heroes",
-    ],
-    // 6. Wargods (B, 4.91)
-    [
-        "Ban-1 - Yukimura",
-        "Ban-2 - Keiji",
-        "Ban-3 - Shingen",
-        "Ban-4 - Akechi",
-        "Ban-5 - Kenshin",
-        "Ban-6 - Amakusa",
-        "Ban-7 - Hanzo",
-        "Ban-8 - Musashi",
-        "Ban-9 - Yoshimoto",
+        "Ban-8 - Dinosaur",
+        "Ban-9 - Paladin",
+        "Ban-10 - Tengu",
+        "Ban-11 - Nurse",
+        "Ban-12 - Cat Clan Heroes",
         "Ban-10 - Oda",
         "Ban-11 - Masamune",
         "Ban-12 - Kaihime",
@@ -1882,9 +1896,9 @@ exports.tierListRaw = [
         "Ban-4 - Yamii",
         "Ban-5 - Volta",
         "Ban-6 - Aer",
-        "Ban-7 - Mizli",
-        "Ban-8 - Tetsukachi",
-        "Ban-9 - Blizana",
+        "Ban-7 - Blizana",
+        "Ban-8 - Mizli",
+        "Ban-9 - Tetsukachi",
     ],
     // 11. Nekolugas (C, 3.54)
     [

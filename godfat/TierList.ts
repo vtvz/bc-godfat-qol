@@ -46,7 +46,9 @@ export default class TierList {
         const fullName = this.descriptionData.nameToFullName[unitName];
 
         if (!fullName) {
-          console.log("don't have full name", unitName);
+          console.log("don't have full name in desc", unitName);
+
+          this.addItem(unitName, unitTier);
 
           continue;
         }

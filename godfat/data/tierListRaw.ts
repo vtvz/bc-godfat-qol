@@ -3,19 +3,20 @@
 // Wram and join with Fest prefix
 // ^v$hS"A,_A^aFest-j
 // Numeric
-// s/\(\d*\)\. \(.*\)/"Fest-\1 - \2",
+// :s/\(\d*\)\. \(.*\)/"Ban-\1 - \2",
 
-// update 7/17/24
+// update 8/20/24
 // based on https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I
+// update doc https://docs.google.com/document/d/183G17wJFQL8Ur3AjXEPWZiuhTJBbPwKY7G54pb4htig
 
 export const tierListRaw: string[][] = [
   [
-    "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
+    "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Ganesha (UT), Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
     "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Dioramos (UT), Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri",
-    "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Gamereon, Cosmo, Kaguya (UF), Issun, Shitakiri, Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
-    "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gundros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
-    "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
-    "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Blizana, Verbena, Nekoluga, Kaoluga",
+    "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Issun, Gamereon, Cosmo, Shitakiri, Kaguya (UF), Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
+    "C - Dinosaur, Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gunduros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
+    "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Blizana, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
+    "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Verbena, Nekoluga, Kaoluga",
     "F - Oda, Myrcia, Envanz, Nobiluga, Papaluga",
   ],
   [
@@ -80,13 +81,20 @@ export const tierListRaw: string[][] = [
     "Fest-15 - Dark Mitama",
     "Fest-16 - Dark Garu",
   ],
+  // https://www.youtube.com/watch?v=5s6rc1T3Y58&t=820s
+  [
+    "A - Kenshin Himura",
+    "C - Sanosuke Sagara",
+    "C - Aoshi Shinomori",
+    "S - Hajime Saito",
+  ],
   // 1. Almighties (A, 6.18)
   [
     "Ban-1 - Chronos",
     "Ban-2 - Poseidon",
-    "Ban-3 - Anubis",
-    "Ban-4 - Amaterasu",
-    "Ban-5 - Ganesha",
+    "Ban-3 - Ganesha",
+    "Ban-4 - Anubis",
+    "Ban-5 - Amaterasu",
     "Ban-6 - Aphrodite",
     "Ban-7 - Lucifer",
     "Ban-8 - Hades",
@@ -115,11 +123,11 @@ export const tierListRaw: string[][] = [
     "Ban-3 - Sarukani",
     "Ban-4 - Kintaro",
     "Ban-5 - Momotaro",
-    "Ban-6 - Gamereon",
-    "Ban-7 - Cosmo",
-    "Ban-8 - Kaguya",
-    "Ban-9 - Issun",
-    "Ban-10 - Shitakiri",
+    "Ban-6 - Issun",
+    "Ban-7 - Gamereon",
+    "Ban-8 - Cosmo",
+    "Ban-9 - Shitakiri",
+    "Ban-10 - Kaguya",
     "Ban-11 - Kachi Kachi",
   ],
   // 4. Galaxy Gals (B, 5.25)
@@ -146,22 +154,11 @@ export const tierListRaw: string[][] = [
     "Ban-5 - Satoru",
     "Ban-6 - Momoco",
     "Ban-7 - Cat Machine",
-    "Ban-8 - Paladin",
-    "Ban-9 - Tengu",
-    "Ban-10 - Nurse",
-    "Ban-11 - Cat Clan Heroes",
-  ],
-  // 6. Wargods (B, 4.91)
-  [
-    "Ban-1 - Yukimura",
-    "Ban-2 - Keiji",
-    "Ban-3 - Shingen",
-    "Ban-4 - Akechi",
-    "Ban-5 - Kenshin",
-    "Ban-6 - Amakusa",
-    "Ban-7 - Hanzo",
-    "Ban-8 - Musashi",
-    "Ban-9 - Yoshimoto",
+    "Ban-8 - Dinosaur",
+    "Ban-9 - Paladin",
+    "Ban-10 - Tengu",
+    "Ban-11 - Nurse",
+    "Ban-12 - Cat Clan Heroes",
     "Ban-10 - Oda",
     "Ban-11 - Masamune",
     "Ban-12 - Kaihime",
@@ -214,9 +211,9 @@ export const tierListRaw: string[][] = [
     "Ban-4 - Yamii",
     "Ban-5 - Volta",
     "Ban-6 - Aer",
-    "Ban-7 - Mizli",
-    "Ban-8 - Tetsukachi",
-    "Ban-9 - Blizana",
+    "Ban-7 - Blizana",
+    "Ban-8 - Mizli",
+    "Ban-9 - Tetsukachi",
   ],
   // 11. Nekolugas (C, 3.54)
   [

@@ -39,6 +39,11 @@ const data: string[] = [
 
   "https://battle-cats.fandom.com/wiki/Cat_Tengu_(Uber_Rare_Cat)",
 
+  "Dinosaur - A strong specialist sniper who deals extremely high piercing DPS against Angels. Has an all round well built kit with good HP, good KB count, and good cooldown. However, he struggles in having an unsafe standing range which considerably lowers general usage and can’t reliably counter higher ranged Angels without the help of peons or a stepping stone. Offers good control from his multi hit + LD attack with a summoner that synergizes well with his sniper kit but can interfere with his short cooldown.",
+
+  // NOTE: PATCH added link as a new line
+  "https://battle-cats.fandom.com/wiki/Dinosaur_(Uber_Rare_Cat)",
+
   "Momoco - Has wide wave attacks with high DPS and strong freeze procs against red, black, and angel, especially with the field wide wave attacks. Can deal good chip damage overtime with the wave, especially if a stepping stone is present. Struggles with survivability and has multi hits which can potentially make her miss attacks.",
 
   "https://battle-cats.fandom.com/wiki/Wonder_MOMOCO_(Legend_Rare_Cat)",
