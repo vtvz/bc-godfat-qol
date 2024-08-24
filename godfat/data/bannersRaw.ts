@@ -250,7 +250,7 @@ const banners: Banner[] = [
       "Narita Kaihime",
       "Shiro Amakusa",
       "Hattori Hanzo",
-      "754-1",
+      "Akechi Mitsuhide",
       "Honda Tadakatsu",
     ],
   },
