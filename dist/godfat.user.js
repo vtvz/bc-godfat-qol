@@ -1588,7 +1588,7 @@ const data = [
     "Black Zeus (Bikkuriman Collab) - Extremely powerful LD attacker/ nuker with great general stats and insanely powerful niche. Has very good base stats with great HP, average KB count, good standing range, a wide LD attack, and strong DPS for his range that puts him to similar general offensive output to Nanaho. His main ability is insane damage vs traitless which puts his effective DPS higher than even Epicfest ubers like Shadow Gao on top of having the benefit of pierce due to being an LD unit. Has average survivability and long foreswing which can give an opportunity for an aggressive pusher to infiltrate his blindspot.",
     "https://battle-cats.fandom.com/wiki/Black_Zeus_(Legend_Rare_Cat)",
     "Gundros - High ranged heavy nuker with super backliner range and gargantuan damage against aliens and blacks. Deals one of the highest singular nuke damage against his targets compared to most other alien and black nukers while offering high effective DPS. However, his damage is insanely limited due to his poor mobility, long attack rate, and carrying the third longest foreswing out of any cat unit. This forces Gundros to be used in a highly risky play style known as bait-and-punish where you lure enemies into his range and nuke them. This causes Gundros to have bad flexibility and very poor synergy with other units, but in return has the potential to completely obliterate a targeted alien/ black, with alien being the more relevant target for his build.",
-    "https://battle-cats.fandom.com/wiki/760_(Uber_Rare_Cat)",
+    "https://battle-cats.fandom.com/wiki/Gunduros_(Uber_Rare_Cat)",
 ];
 exports.default = data;
 
@@ -1693,17 +1693,17 @@ exports.default = npChart;
 // :s/\(\d*\)\. \(.*\)/"Ban-\1 - \2",
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tierListRaw = void 0;
-// update 8/20/24
+// update 9/29/24
 // based on https://docs.google.com/document/u/0/d/10jGnHCqKcaVoQ6uPxohy57YKhQUjo20H_ddVXzSot3I
 // update doc https://docs.google.com/document/d/183G17wJFQL8Ur3AjXEPWZiuhTJBbPwKY7G54pb4htig
 exports.tierListRaw = [
     [
-        "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Akira (UT), Saki, Vigler, Chronos, Poseidon, Ganesha (UT), Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
-        "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Dioramos (UT), Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri",
-        "B - Momoco, Ice, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Raiden (UT), Issun, Gamereon, Cosmo, Shitakiri, Kaguya (UF), Warlock, Hayabusa, Prof Abyss, Mekako, Cyclops, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika, Balaluga, Asiluga",
-        "C - Dinosaur, Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Masamune (UT), Vars, Gunduros, Raiden, Kachi Kachi (UT), Kachi Kachi, Kaguya, Akira, Zeus (UT), Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
-        "D - Nurse (UT), Nurse, Cat Clan Heroes, Kaihime, Masamune, Kuu, Pegasa, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Megidora, Babel, Dioramos, Zeus, Blizana, Mizli, Tetsukachi, Tomoe, Legeluga, Nekoluga (UT)",
-        "E - Coppermine, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Verbena, Nekoluga, Kaoluga",
+        "S - Balrog, Lasvoss, Baby Cat (UF), Yukimura, Keiji, Kuu (UT), Windy (UF), Kalisa, Daliasan, Dioramos (UT), Akira (UT), Saki, Vigler, Chronos, Poseidon, Ganesha (UT), Anubis (UT), Amaterasu, Ganesha, Siege (UF), Tecoluga",
+        "A - Baby Cat, Ice (UT), Satoru, Shingen (UT), Kai, Coppermine (UT), Lilin, Kasa Jizo, Ushiwakamaru, Sarukani, Kintaro, Momotaro (UT), Momotaro, Thunder Jack, Warlock (UT), Catman, Aphrodite (UT), Lucifer, Aphrodite, Hades, Gaia, Deth Troy, Aethur, Thermae, Muu, Lumina, Nanaho, Kanna, Himeyuri (UT), Himeyuri, Balaluga, Asiluga",
+        "B - Momoco, Ice, Dynasaurus, Cat Machine (UT), Cat Machine, Akechi, Shingen, Kenshin, Amakusa, Hanzo, Jeanne, Windy, Thundia, Twinstars, Terun, Ganglion, Hevijak, Issun, Gamereon, Cosmo, Shitakiri, Kaguya (UF), Warlock, Hayabusa, Prof Abyss, Mekako, White Rabbit (UF), Aset, Drednot, Rekon Korps, Bora, Gravi, Yamii, Ruri (UT), Ruri, Reika",
+        "C - Paladin, Tengu, Musashi, Yoshimoto, Oda (UF), Gunduros, Raiden (UT), Raiden, Dioramos, Babel, Kachi Kachi (UT), Kachi Kachi, Kaguya, Cyclops, Akira, Anubis, Bomburr, Volta, Aer (UF), Vega, Deale, Shishilan, Kubiluga, Furiluga",
+        "D - Nurse (UT), Nurse, Kaihime, Masamune (UT), Masamune, Kuu, Pegasa, Vars, Gladios, Kamukura (UT), Kamukura, Megidora (UT), Zeus (UT), Zeus, Blizana, Mizli, Tetsukachi, Tomoe, Legeluga, Kaoluga, Nekoluga (UT)",
+        "E - Cat Clan Heroes, Coppermine, Megidora, Sodom, White Rabbit, Sphinx Korps, Siege, Aer, Verbena, Nekoluga",
         "F - Oda, Myrcia, Envanz, Nobiluga, Papaluga",
     ],
     [
@@ -1715,8 +1715,8 @@ exports.tierListRaw = [
         "TOP-6 - Miko Mitama",
         "TOP-7 - D’arktanyan",
         "TOP-8 - Yukimura",
-        "TOP-9 - Chronos",
-        "TOP-10 - Sirius",
+        "TOP-9 - Lasvoss",
+        "TOP-10 - Chronos",
     ],
     [
         "S - Izanagi",
@@ -1787,7 +1787,7 @@ exports.tierListRaw = [
         "Ban-10 - Aset",
         "Ban-11 - Zeus",
     ],
-    // 2. Dark Heroes (A, 5.81)
+    // 2. Dark Heroes (A, 5.72)
     [
         "Ban-1 - Akira",
         "Ban-2 - Saki",
@@ -1798,24 +1798,10 @@ exports.tierListRaw = [
         "Ban-7 - Hayabusa",
         "Ban-8 - Heaven",
         "Ban-9 - Mekako",
-        "Ban-10 - Cyclops",
-        "Ban-11 - White Rabbit",
+        "Ban-10 - White Rabbit",
+        "Ban-11 - Cyclops",
     ],
-    // 3. Ultra Souls (B, 5.36)
-    [
-        "Ban-1 - Kasa Jizo",
-        "Ban-2 - Ushiwakamaru",
-        "Ban-3 - Sarukani",
-        "Ban-4 - Kintaro",
-        "Ban-5 - Momotaro",
-        "Ban-6 - Issun",
-        "Ban-7 - Gamereon",
-        "Ban-8 - Cosmo",
-        "Ban-9 - Shitakiri",
-        "Ban-10 - Kaguya",
-        "Ban-11 - Kachi Kachi",
-    ],
-    // 4. Galaxy Gals (B, 5.25)
+    // 3. Galaxy Gals (B, 5.25)
     [
         "Ban-1 - Kuu",
         "Ban-2 - Windy",
@@ -1830,7 +1816,22 @@ exports.tierListRaw = [
         "Ban-11 - Pegasa",
         "Ban-12 - Myrcia",
     ],
-    // 5. Dynamites (B, 5.18)
+    // 4. Ultra Souls (B, 5.16)
+    [
+        "Ban-1 - Kasa Jizo",
+        "Ban-2 - Ushiwakamaru",
+        "Ban-3 - Sarukani",
+        "Ban-4 - Kintaro",
+        "Ban-5 - Momotaro",
+        "Ban-6 - Issun",
+        "Ban-7 - Gamereon",
+        "Ban-8 - Cosmo",
+        "Ban-9 - Shitakiri",
+        "Ban-10 - Kaguya",
+        "Ban-11 - Kachi Kachi",
+        "Ban-12 - Hanasaka",
+    ],
+    // 5. Dynamites (B, 5.08)
     [
         "Ban-1 - Balrog",
         "Ban-2 - Lasvoss",
@@ -1838,12 +1839,24 @@ exports.tierListRaw = [
         "Ban-4 - Ice Cat",
         "Ban-5 - Satoru",
         "Ban-6 - Momoco",
-        "Ban-7 - Cat Machine",
-        "Ban-8 - Dinosaur",
+        "Ban-7 - Dynasaurus",
+        "Ban-8 - Cat Machine",
         "Ban-9 - Paladin",
         "Ban-10 - Tengu",
         "Ban-11 - Nurse",
         "Ban-12 - Cat Clan Heroes",
+    ],
+    // 6. Wargods (B, 4.92)
+    [
+        "Ban-1 - Yukimura",
+        "Ban-2 - Keiji",
+        "Ban-3 - Shingen",
+        "Ban-4 - Hanzo",
+        "Ban-5 - Akechi",
+        "Ban-6 - Amakusa",
+        "Ban-7 - Kenshin",
+        "Ban-8 - Musashi",
+        "Ban-9 - Yoshimoto",
         "Ban-10 - Oda",
         "Ban-11 - Masamune",
         "Ban-12 - Kaihime",
@@ -1873,26 +1886,11 @@ exports.tierListRaw = [
         "Ban-8 - Tomoe",
         "Ban-9 - Verbena",
     ],
-    // 9. Dragon Emperors (C, 4.17)
+    // 9. Elemental Pixies (C, 4.33)
     [
-        "Ban-1 - Daliasan",
-        "Ban-2 - Dioramos",
-        "Ban-3 - Ganglion",
-        "Ban-4 - Hevijak",
-        "Ban-5 - Raiden",
-        "Ban-6 - Vars",
-        "Ban-7 - Gunduros",
-        "Ban-8 - Gladios",
-        "Ban-9 - Kamukura",
-        "Ban-10 - Megidora",
-        "Ban-11 - Babel",
-        "Ban-12 - Sodom",
-    ],
-    // 10. Elemental Pixies (C, 4.11)
-    [
-        "Ban-1 - Lumina",
-        "Ban-2 - Bora",
-        "Ban-3 - Gravi",
+        "Ban-1 - Gravi",
+        "Ban-2 - Lumina",
+        "Ban-3 - Bora",
         "Ban-4 - Yamii",
         "Ban-5 - Volta",
         "Ban-6 - Aer",
@@ -1900,7 +1898,22 @@ exports.tierListRaw = [
         "Ban-8 - Mizli",
         "Ban-9 - Tetsukachi",
     ],
-    // 11. Nekolugas (C, 3.54)
+    // 10. Dragon Emperors (C, 4.16)
+    [
+        "Ban-1 - Daliasan",
+        "Ban-2 - Dioramos",
+        "Ban-3 - Hevijak",
+        "Ban-4 - Ganglion",
+        "Ban-5 - Raiden",
+        "Ban-6 - Gunduros",
+        "Ban-7 - Babel",
+        "Ban-8 - Gladios",
+        "Ban-9 - Vars",
+        "Ban-10 - Kamukura",
+        "Ban-11 - Megidora",
+        "Ban-12 - Sodom",
+    ],
+    // 11. Nekolugas (C, 3.81)
     [
         "Ban-1 - Tecoluga",
         "Ban-2 - Balaluga",
@@ -1909,8 +1922,8 @@ exports.tierListRaw = [
         "Ban-5 - Kubiluga",
         "Ban-6 - Furiluga",
         "Ban-7 - Legeluga",
-        "Ban-8 - Nekoluga",
-        "Ban-9 - Kaoluga",
+        "Ban-8 - Kaoluga",
+        "Ban-9 - Nekoluga",
         "Ban-10 - Nobiluga",
         "Ban-11 - Papaluga",
     ],

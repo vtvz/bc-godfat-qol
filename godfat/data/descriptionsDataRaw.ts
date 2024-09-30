@@ -548,7 +548,7 @@ const data: string[] = [
 
   "Gundros - High ranged heavy nuker with super backliner range and gargantuan damage against aliens and blacks. Deals one of the highest singular nuke damage against his targets compared to most other alien and black nukers while offering high effective DPS. However, his damage is insanely limited due to his poor mobility, long attack rate, and carrying the third longest foreswing out of any cat unit. This forces Gundros to be used in a highly risky play style known as bait-and-punish where you lure enemies into his range and nuke them. This causes Gundros to have bad flexibility and very poor synergy with other units, but in return has the potential to completely obliterate a targeted alien/ black, with alien being the more relevant target for his build.",
 
-  "https://battle-cats.fandom.com/wiki/760_(Uber_Rare_Cat)",
+  "https://battle-cats.fandom.com/wiki/Gunduros_(Uber_Rare_Cat)",
 ];
 
 export default data;
